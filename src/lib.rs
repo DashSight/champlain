@@ -14,16 +14,4 @@
  * limitations under the License.
  */
 
-#[repr(C)] pub struct ClutterActor { _private: [u8; 0] }
-
-/// ChamplainView functions
-#[link(name = "champlain-0.12")]
-extern {
-    fn champlain_view_new () -> *mut ClutterActor;
-}
-
-pub fn view_new() -> *mut ClutterActor {
-    unsafe {
-        champlain_view_new()
-    }
-}
+pub mod view;
