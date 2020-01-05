@@ -14,29 +14,30 @@
  * limitations under the License.
  */
 
-#[repr(C)] pub struct ClutterActor { _private: [u8; 0] }
+use libc::{c_double, c_uint};
+
 #[repr(C)] pub struct ChamplainView { _private: [u8; 0] }
 
 /// ChamplainView functions
 #[link(name = "champlain-0.12")]
 extern {
-    fn champlain_view_new () -> *mut ClutterActor;
+    fn champlain_view_new () -> *mut ChamplainView;
     fn champlain_view_center_on (view: *mut ChamplainView,
-                                 latitude: glib_sys::GDoubleIEEE754,
-                                 longitude: glib_sys::GDoubleIEEE754);
+                                 latitude: c_double,
+                                 longitude: c_double);
     fn champlain_view_set_zoom_level (view: *mut ChamplainView,
-                                      zoom_level: u32);
+                                      zoom_level: c_uint);
 }
 
-pub fn view_new() -> Option<*mut ClutterActor> {
+pub fn view_new() -> Option<*mut ChamplainView> {
     unsafe {
         Some(champlain_view_new())
     }
 }
 
 pub fn view_center_on(view: *mut ChamplainView,
-                      latitude: glib_sys::GDoubleIEEE754,
-                      longitude: glib_sys::GDoubleIEEE754) {
+                      latitude: f64,
+                      longitude: f64) {
     unsafe {
         champlain_view_center_on(view, latitude, longitude)
     }
