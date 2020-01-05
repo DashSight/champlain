@@ -1,7 +1,7 @@
 [package]
 name = "champlain"
 repository = "https://github.com/alistair23/champlain"
-version = "0.1.0"
+version = "0.12.0"
 authors = ["Alistair Francis <alistair@alistair23.me>"]
 edition = "2018"
 
