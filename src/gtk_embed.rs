@@ -14,9 +14,18 @@
  * limitations under the License.
  */
 
-pub mod gtk_embed;
+use crate::view::*;
 
-pub mod view;
+#[link(name = "champlain-gtk-0.12")]
+extern "C" {
+    fn gtk_champlain_embed_new() -> gtk::Widget;
+    fn gtk_champlain_embed_get_view(embed: gtk::Widget) -> *mut ChamplainView;
+}
 
-pub mod layer;
-pub mod markerlayer;
+pub fn new() -> gtk::Widget {
+    unsafe { gtk_champlain_embed_new() }
+}
+
+pub fn get_view(embed: gtk::Widget) -> Option<*mut ChamplainView> {
+    unsafe { Some(gtk_champlain_embed_get_view(embed)) }
+}
