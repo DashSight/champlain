@@ -9,3 +9,13 @@ The bindings in this library are added on a as need basis. If you would like any
 The versions of this crate follow the libchamplain version we are targetting. That is version `x.y.0` targets libchamplain version `x.y.*`.
 
 We currently only support libchamplain v0.12
+
+## Building
+
+You will need to install libchamplain and libchamplain-gtk.
+
+On Debain this can be done with:
+
+```shell
+apt install libchamplain-0.12-dev libchamplain-gtk-0.12-dev
+```
