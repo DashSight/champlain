@@ -14,27 +14,30 @@
  * limitations under the License.
  */
 
-#[repr(C)] pub struct ChamplainView { _private: [u8; 0] }
-#[repr(C)] pub struct ChamplainLayer { _private: [u8; 0] }
-#[repr(C)] pub struct ChamplainBoundingBox { _private: [u8; 0] }
+#[repr(C)]
+pub struct ChamplainView {
+    _private: [u8; 0],
+}
+#[repr(C)]
+pub struct ChamplainLayer {
+    _private: [u8; 0],
+}
+#[repr(C)]
+pub struct ChamplainBoundingBox {
+    _private: [u8; 0],
+}
 
 /// ChamplainLayer functions
 #[link(name = "champlain-0.12")]
-extern {
-    fn champlain_layer_set_view  (layer: *mut ChamplainLayer,
-                                  view: *mut ChamplainView);
-    fn champlain_layer_get_bounding_box (layer: *mut ChamplainLayer) ->
-                          *mut ChamplainBoundingBox;
+extern "C" {
+    fn champlain_layer_set_view(layer: *mut ChamplainLayer, view: *mut ChamplainView);
+    fn champlain_layer_get_bounding_box(layer: *mut ChamplainLayer) -> *mut ChamplainBoundingBox;
 }
 
 pub fn layer_set_view(layer: *mut ChamplainLayer, view: *mut ChamplainView) {
-    unsafe {
-        champlain_layer_set_view(layer, view)
-    }
+    unsafe { champlain_layer_set_view(layer, view) }
 }
 
 pub fn layer_get_bounding_box(layer: *mut ChamplainLayer) -> *mut ChamplainBoundingBox {
-    unsafe {
-        champlain_layer_get_bounding_box(layer)
-    }
+    unsafe { champlain_layer_get_bounding_box(layer) }
 }

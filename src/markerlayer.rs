@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-#[repr(C)] pub struct ChamplainMarkerLayer { _private: [u8; 0] }
+#[repr(C)]
+pub struct ChamplainMarkerLayer {
+    _private: [u8; 0],
+}
 
 #[repr(C)]
 pub enum ChamplainSelectionMode {
@@ -23,24 +26,20 @@ pub enum ChamplainSelectionMode {
     /// Only one marker can be selected.
     ChamplainSelectionSingle,
     /// Multiple marker can be selected.
-    ChamplainSelectionMultiple
+    ChamplainSelectionMultiple,
 }
 
 /// ChamplainMarkerLayer functions
 #[link(name = "champlain-0.12")]
-extern {
-    fn champlain_marker_layer_new () -> *mut ChamplainMarkerLayer;
-    fn champlain_marker_layer_new_full (mode: ChamplainSelectionMode) -> *mut ChamplainMarkerLayer;
+extern "C" {
+    fn champlain_marker_layer_new() -> *mut ChamplainMarkerLayer;
+    fn champlain_marker_layer_new_full(mode: ChamplainSelectionMode) -> *mut ChamplainMarkerLayer;
 }
 
 pub fn marker_layer_new() -> *mut ChamplainMarkerLayer {
-    unsafe {
-        champlain_marker_layer_new()
-    }
+    unsafe { champlain_marker_layer_new() }
 }
 
 pub fn marker_layer_new_full(mode: ChamplainSelectionMode) -> *mut ChamplainMarkerLayer {
-    unsafe {
-        champlain_marker_layer_new_full(mode)
-    }
+    unsafe { champlain_marker_layer_new_full(mode) }
 }
