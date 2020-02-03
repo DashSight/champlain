@@ -16,16 +16,30 @@
 
 use crate::view::*;
 
-#[link(name = "champlain-gtk-0.12")]
+#[repr(C)]
+#[derive(Clone)]
+pub struct ClutterActor {
+    _private: [u8; 0],
+}
+
+#[link(name = "clutter-1.0")]
 extern "C" {
-    fn gtk_champlain_embed_new() -> gtk::Widget;
-    fn gtk_champlain_embed_get_view(embed: gtk::Widget) -> *mut ChamplainView;
+    fn clutter_stage_new () -> *mut ClutterActor;
+    fn clutter_actor_add_child (me: *mut ClutterActor, child: *mut ClutterActor);
 }
 
-pub fn new() -> gtk::Widget {
-    unsafe { gtk_champlain_embed_new() }
+pub fn clutter_actor(input: *mut ChamplainView) -> *mut ClutterActor {
+    unsafe { &mut *(input as *mut ClutterActor) }
 }
 
-pub fn get_view(embed: gtk::Widget) -> Option<*mut ChamplainView> {
-    unsafe { Some(gtk_champlain_embed_get_view(embed)) }
+pub fn stage_new() -> *mut ClutterActor {
+    unsafe {
+      clutter_stage_new()
+    }
+}
+
+pub fn actor_add_child (me: *mut ClutterActor, child: *mut ClutterActor) {
+    unsafe {
+        clutter_actor_add_child(me, child)
+    }
 }
