@@ -18,10 +18,10 @@
 #[allow(non_camel_case_types)]
 #[derive(PartialEq)]
 pub enum Error {
-    CLUTTER_INIT_SUCCESS        =  1,
-    CLUTTER_INIT_ERROR_UNKNOWN  =  0,
-    CLUTTER_INIT_ERROR_THREADS  = -1,
-    CLUTTER_INIT_ERROR_BACKEND  = -2,
+    CLUTTER_INIT_SUCCESS = 1,
+    CLUTTER_INIT_ERROR_UNKNOWN = 0,
+    CLUTTER_INIT_ERROR_THREADS = -1,
+    CLUTTER_INIT_ERROR_BACKEND = -2,
     CLUTTER_INIT_ERROR_INTERNAL = -3,
 }
 
@@ -31,7 +31,5 @@ extern "C" {
 }
 
 pub fn init() -> Error {
-    unsafe {
-      gtk_clutter_init()
-    }
+    unsafe { gtk_clutter_init() }
 }

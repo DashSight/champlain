@@ -19,7 +19,7 @@ use crate::clutter::*;
 /// ChamplainMarker functions
 #[link(name = "champlain-0.12")]
 extern "C" {
-    fn champlain_marker_new () -> *mut ClutterActor;
+    fn champlain_marker_new() -> *mut ClutterActor;
 }
 
 pub fn new() -> *mut ClutterActor {

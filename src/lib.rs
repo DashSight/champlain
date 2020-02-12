@@ -18,9 +18,9 @@ pub mod gtk_embed;
 
 pub mod view;
 
-pub mod layer;
-pub mod markerlayer;
 pub mod clutter;
 pub mod gtk_clutter;
-pub mod marker;
+pub mod layer;
 pub mod location;
+pub mod marker;
+pub mod markerlayer;

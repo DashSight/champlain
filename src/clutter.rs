@@ -24,8 +24,8 @@ pub struct ClutterActor {
 
 #[link(name = "clutter-1.0")]
 extern "C" {
-    fn clutter_stage_new () -> *mut ClutterActor;
-    fn clutter_actor_add_child (me: *mut ClutterActor, child: *mut ClutterActor);
+    fn clutter_stage_new() -> *mut ClutterActor;
+    fn clutter_actor_add_child(me: *mut ClutterActor, child: *mut ClutterActor);
 }
 
 pub fn clutter_actor(input: *mut ChamplainView) -> *mut ClutterActor {
@@ -33,13 +33,9 @@ pub fn clutter_actor(input: *mut ChamplainView) -> *mut ClutterActor {
 }
 
 pub fn stage_new() -> *mut ClutterActor {
-    unsafe {
-      clutter_stage_new()
-    }
+    unsafe { clutter_stage_new() }
 }
 
-pub fn actor_add_child (me: *mut ClutterActor, child: *mut ClutterActor) {
-    unsafe {
-        clutter_actor_add_child(me, child)
-    }
+pub fn actor_add_child(me: *mut ClutterActor, child: *mut ClutterActor) {
+    unsafe { clutter_actor_add_child(me, child) }
 }
