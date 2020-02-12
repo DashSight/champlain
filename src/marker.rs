@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-pub mod gtk_embed;
+use crate::clutter::*;
 
-pub mod view;
+/// ChamplainMarker functions
+#[link(name = "champlain-0.12")]
+extern "C" {
+    fn champlain_marker_new () -> *mut ClutterActor;
+}
 
-pub mod layer;
-pub mod markerlayer;
-pub mod clutter;
-pub mod gtk_clutter;
-pub mod marker;
-pub mod location;
+pub fn new() -> *mut ClutterActor {
+    unsafe { champlain_marker_new() }
+}

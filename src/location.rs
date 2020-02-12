@@ -14,13 +14,24 @@
  * limitations under the License.
  */
 
-pub mod gtk_embed;
+use crate::clutter::*;
+use libc::c_double;
 
-pub mod view;
+#[repr(C)]
+pub struct ChamplainLocation {
+    _private: [u8; 0],
+}
 
-pub mod layer;
-pub mod markerlayer;
-pub mod clutter;
-pub mod gtk_clutter;
-pub mod marker;
-pub mod location;
+/// ChamplainMarker functions
+#[link(name = "champlain-0.12")]
+extern "C" {
+    fn champlain_location_set_location  (location: *mut ChamplainLocation, lat: c_double, lon: c_double);
+}
+
+pub fn actor_to_location(actor: *mut ClutterActor) -> *mut ChamplainLocation {
+	unsafe { std::mem::transmute::<*mut ClutterActor, *mut ChamplainLocation>(actor) }
+}
+
+pub fn set_location(location: *mut ChamplainLocation, lat: f64, lon: f64) {
+    unsafe { champlain_location_set_location(location, lat, lon) }
+}
