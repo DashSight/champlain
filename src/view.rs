@@ -21,6 +21,9 @@ pub struct ChamplainView {
     _private: [u8; 0],
 }
 
+unsafe impl Send for ChamplainView {}
+unsafe impl Sync for ChamplainView {}
+
 /// ChamplainView functions
 #[link(name = "champlain-0.12")]
 extern "C" {
