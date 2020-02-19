@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+use libc::{c_char, c_int};
+use std::ptr;
+
 #[repr(C)]
 #[allow(non_camel_case_types)]
 #[derive(PartialEq)]
@@ -27,9 +30,9 @@ pub enum Error {
 
 #[link(name = "clutter-gtk-1.0")]
 extern "C" {
-    fn gtk_clutter_init() -> Error;
+    fn gtk_clutter_init(argc: *const c_int, argv: *const *const c_char) -> Error;
 }
 
 pub fn init() -> Error {
-    unsafe { gtk_clutter_init() }
+    unsafe { gtk_clutter_init(ptr::null(), ptr::null()) }
 }
