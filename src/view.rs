@@ -33,18 +33,18 @@ extern "C" {
     fn champlain_view_set_kinetic_mode(view: *mut ChamplainView, mode: bool);
 }
 
-pub fn view_new() -> Option<*mut ChamplainView> {
+pub fn new() -> Option<*mut ChamplainView> {
     unsafe { Some(champlain_view_new()) }
 }
 
-pub fn view_center_on(view: *mut ChamplainView, latitude: f64, longitude: f64) {
+pub fn center_on(view: *mut ChamplainView, latitude: f64, longitude: f64) {
     unsafe { champlain_view_center_on(view, latitude, longitude) }
 }
 
-pub fn view_set_zoom_level(view: *mut ChamplainView, zoom_level: u32) {
+pub fn set_zoom_level(view: *mut ChamplainView, zoom_level: u32) {
     unsafe { champlain_view_set_zoom_level(view, zoom_level) }
 }
 
 pub fn set_kinetic_mode(view: *mut ChamplainView, mode: bool) {
-	unsafe { champlain_view_set_kinetic_mode(view, mode) }
+    unsafe { champlain_view_set_kinetic_mode(view, mode) }
 }

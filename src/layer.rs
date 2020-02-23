@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-#[repr(C)]
-pub struct ChamplainView {
-    _private: [u8; 0],
-}
+use crate::view::*;
+
 #[repr(C)]
 pub struct ChamplainLayer {
     _private: [u8; 0],
@@ -34,10 +32,10 @@ extern "C" {
     fn champlain_layer_get_bounding_box(layer: *mut ChamplainLayer) -> *mut ChamplainBoundingBox;
 }
 
-pub fn layer_set_view(layer: *mut ChamplainLayer, view: *mut ChamplainView) {
+pub fn set_view(layer: *mut ChamplainLayer, view: *mut ChamplainView) {
     unsafe { champlain_layer_set_view(layer, view) }
 }
 
-pub fn layer_get_bounding_box(layer: *mut ChamplainLayer) -> *mut ChamplainBoundingBox {
+pub fn get_bounding_box(layer: *mut ChamplainLayer) -> *mut ChamplainBoundingBox {
     unsafe { champlain_layer_get_bounding_box(layer) }
 }

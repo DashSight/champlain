@@ -36,10 +36,10 @@ extern "C" {
     fn champlain_marker_layer_new_full(mode: ChamplainSelectionMode) -> *mut ChamplainMarkerLayer;
 }
 
-pub fn marker_layer_new() -> *mut ChamplainMarkerLayer {
+pub fn new() -> *mut ChamplainMarkerLayer {
     unsafe { champlain_marker_layer_new() }
 }
 
-pub fn marker_layer_new_full(mode: ChamplainSelectionMode) -> *mut ChamplainMarkerLayer {
+pub fn new_full(mode: ChamplainSelectionMode) -> *mut ChamplainMarkerLayer {
     unsafe { champlain_marker_layer_new_full(mode) }
 }

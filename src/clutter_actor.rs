@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
-pub mod gtk_embed;
+use crate::clutter::*;
+use crate::view::*;
 
-pub mod view;
+#[link(name = "clutter-1.0")]
+extern "C" {
+    fn clutter_actor_add_child(me: *mut ClutterActor, child: *mut ClutterActor);
+}
 
-pub mod clutter;
-pub mod clutter_actor;
-pub mod gtk_clutter;
-pub mod layer;
-pub mod location;
-pub mod marker;
-pub mod markerlayer;
+pub fn clutter_actor(input: *mut ChamplainView) -> *mut ClutterActor {
+    unsafe { &mut *(input as *mut ClutterActor) }
+}
+
+pub fn actor_add_child(me: *mut ClutterActor, child: *mut ClutterActor) {
+    unsafe { clutter_actor_add_child(me, child) }
+}

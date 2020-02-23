@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-use crate::view::*;
 use libc::{c_char, c_int};
 use std::ptr;
 
@@ -39,21 +38,12 @@ pub enum Error {
 extern "C" {
     fn clutter_init(argc: *const c_int, argv: *const *const c_char) -> Error;
     fn clutter_stage_new() -> *mut ClutterActor;
-    fn clutter_actor_add_child(me: *mut ClutterActor, child: *mut ClutterActor);
 }
 
 pub fn init() -> Error {
     unsafe { clutter_init(ptr::null(), ptr::null()) }
 }
 
-pub fn clutter_actor(input: *mut ChamplainView) -> *mut ClutterActor {
-    unsafe { &mut *(input as *mut ClutterActor) }
-}
-
 pub fn stage_new() -> *mut ClutterActor {
     unsafe { clutter_stage_new() }
-}
-
-pub fn actor_add_child(me: *mut ClutterActor, child: *mut ClutterActor) {
-    unsafe { clutter_actor_add_child(me, child) }
 }
