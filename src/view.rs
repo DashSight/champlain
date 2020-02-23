@@ -15,6 +15,7 @@
  */
 
 use libc::{c_double, c_uint};
+use glib;
 
 #[repr(C)]
 pub struct ChamplainView {
@@ -30,6 +31,10 @@ extern "C" {
     fn champlain_view_new() -> *mut ChamplainView;
     fn champlain_view_center_on(view: *mut ChamplainView, latitude: c_double, longitude: c_double);
     fn champlain_view_set_zoom_level(view: *mut ChamplainView, zoom_level: c_uint);
+}
+
+pub fn view_to_object(view: *mut ChamplainView) -> *mut glib::object::Object {
+    unsafe { std::mem::transmute::<*mut ChamplainView, *mut glib::object::Object>(view) }
 }
 
 pub fn view_new() -> Option<*mut ChamplainView> {
