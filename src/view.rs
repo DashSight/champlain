@@ -31,6 +31,7 @@ extern "C" {
     fn champlain_view_center_on(view: *mut ChamplainView, latitude: c_double, longitude: c_double);
     fn champlain_view_set_zoom_level(view: *mut ChamplainView, zoom_level: c_uint);
     fn champlain_view_set_kinetic_mode(view: *mut ChamplainView, mode: bool);
+    fn champlain_view_set_zoom_on_double_click(view: *mut ChamplainView, value: bool);
 }
 
 pub fn new() -> Option<*mut ChamplainView> {
@@ -47,4 +48,8 @@ pub fn set_zoom_level(view: *mut ChamplainView, zoom_level: u32) {
 
 pub fn set_kinetic_mode(view: *mut ChamplainView, mode: bool) {
     unsafe { champlain_view_set_kinetic_mode(view, mode) }
+}
+
+pub fn set_zoom_on_double_click(view: *mut ChamplainView, value: bool) {
+	unsafe { champlain_view_set_zoom_on_double_click(view, value) }
 }

@@ -20,6 +20,7 @@ use crate::view::*;
 #[link(name = "clutter-1.0")]
 extern "C" {
     fn clutter_actor_add_child(me: *mut ClutterActor, child: *mut ClutterActor);
+    fn clutter_actor_set_reactive(actor: *mut ClutterActor, reactive: bool);
 }
 
 pub fn clutter_actor(input: *mut ChamplainView) -> *mut ClutterActor {
@@ -28,4 +29,8 @@ pub fn clutter_actor(input: *mut ChamplainView) -> *mut ClutterActor {
 
 pub fn actor_add_child(me: *mut ClutterActor, child: *mut ClutterActor) {
     unsafe { clutter_actor_add_child(me, child) }
+}
+
+pub fn set_reactive(actor: *mut ClutterActor, reactive: bool) {
+	unsafe { clutter_actor_set_reactive(actor, reactive) }
 }
