@@ -36,10 +36,6 @@ pub enum Error {
     CLUTTER_INIT_ERROR_INTERNAL = -3,
 }
 
-pub fn to_champlain_marker(input: *mut ClutterActor) -> *mut ChamplainMarker {
-    unsafe { &mut *(input as *mut ChamplainMarker) }
-}
-
 #[link(name = "clutter-1.0")]
 extern "C" {
     fn clutter_init(argc: *const c_int, argv: *const *const c_char) -> Error;

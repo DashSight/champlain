@@ -14,16 +14,11 @@
  * limitations under the License.
  */
 
-use crate::clutter::ClutterActor;
 use libc::c_double;
 
 #[repr(C)]
 pub struct ChamplainLocation {
     _private: [u8; 0],
-}
-
-pub fn to_location(actor: *mut ClutterActor) -> *mut ChamplainLocation {
-    unsafe { std::mem::transmute::<*mut ClutterActor, *mut ChamplainLocation>(actor) }
 }
 
 /// ChamplainMarker functions

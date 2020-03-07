@@ -16,15 +16,26 @@
 
 use crate::clutter::ClutterActor;
 use crate::layer::ChamplainLayer;
+use crate::location::ChamplainLocation;
+use crate::marker::ChamplainMarker;
 
 pub fn to_champlain_layer(input: *mut ClutterActor) -> *mut ChamplainLayer {
     unsafe { &mut *(input as *mut ChamplainLayer) }
+}
+
+pub fn to_champlain_marker(input: *mut ClutterActor) -> *mut ChamplainMarker {
+    unsafe { &mut *(input as *mut ChamplainMarker) }
+}
+
+pub fn to_location(actor: *mut ClutterActor) -> *mut ChamplainLocation {
+    unsafe { std::mem::transmute::<*mut ClutterActor, *mut ChamplainLocation>(actor) }
 }
 
 #[link(name = "clutter-1.0")]
 extern "C" {
     fn clutter_actor_add_child(me: *mut ClutterActor, child: *mut ClutterActor);
     fn clutter_actor_set_reactive(actor: *mut ClutterActor, reactive: bool);
+    fn clutter_actor_show(me: *mut ClutterActor);
 }
 
 pub fn actor_add_child(me: *mut ClutterActor, child: *mut ClutterActor) {
@@ -33,4 +44,8 @@ pub fn actor_add_child(me: *mut ClutterActor, child: *mut ClutterActor) {
 
 pub fn set_reactive(actor: *mut ClutterActor, reactive: bool) {
     unsafe { clutter_actor_set_reactive(actor, reactive) }
+}
+
+pub fn show(me: *mut ClutterActor) {
+    unsafe { clutter_actor_show(me) }
 }
