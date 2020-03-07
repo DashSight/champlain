@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-use crate::clutter::*;
+use crate::clutter::ClutterActor;
 use libc::c_double;
 
 #[repr(C)]

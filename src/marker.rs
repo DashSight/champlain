@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-use crate::clutter::*;
+use crate::clutter::ClutterActor;
 
 /// ChamplainMarker functions
 #[link(name = "champlain-0.12")]

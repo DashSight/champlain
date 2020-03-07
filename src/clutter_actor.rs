@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-use crate::clutter::*;
-use crate::view::*;
+use crate::clutter::ClutterActor;
 
 #[link(name = "clutter-1.0")]
 extern "C" {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-use crate::view::*;
+use crate::view::ChamplainView;
 
 #[link(name = "champlain-gtk-0.12")]
 extern "C" {

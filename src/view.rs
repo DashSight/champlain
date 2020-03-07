@@ -16,6 +16,8 @@
 
 use libc::{c_double, c_uint};
 
+use crate::clutter::ClutterActor;
+
 #[repr(C)]
 pub struct ChamplainView {
     _private: [u8; 0],

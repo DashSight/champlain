@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-use crate::view::*;
+use crate::view::ChamplainView;
 
 #[repr(C)]
 pub struct ChamplainLayer {
