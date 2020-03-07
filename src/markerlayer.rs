@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+use crate::layer::ChamplainLayer;
 use crate::marker::ChamplainMarker;
 
 #[repr(C)]
@@ -29,6 +30,10 @@ pub enum ChamplainSelectionMode {
     ChamplainSelectionSingle,
     /// Multiple marker can be selected.
     ChamplainSelectionMultiple,
+}
+
+pub fn to_layer(input: *mut ChamplainMarkerLayer) -> *mut ChamplainLayer {
+    unsafe { &mut *(input as *mut ChamplainLayer) }
 }
 
 /// ChamplainMarkerLayer functions
