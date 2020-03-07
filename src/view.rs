@@ -17,6 +17,7 @@
 use libc::{c_double, c_uint};
 
 use crate::clutter::ClutterActor;
+use crate::layer::ChamplainLayer;
 
 #[repr(C)]
 pub struct ChamplainView {
@@ -38,6 +39,7 @@ extern "C" {
     fn champlain_view_set_zoom_level(view: *mut ChamplainView, zoom_level: c_uint);
     fn champlain_view_set_kinetic_mode(view: *mut ChamplainView, mode: bool);
     fn champlain_view_set_zoom_on_double_click(view: *mut ChamplainView, value: bool);
+    fn champlain_view_add_layer(view: *mut ChamplainView, layer: *mut ChamplainLayer);
 }
 
 pub fn new() -> Option<*mut ChamplainView> {
@@ -58,4 +60,8 @@ pub fn set_kinetic_mode(view: *mut ChamplainView, mode: bool) {
 
 pub fn set_zoom_on_double_click(view: *mut ChamplainView, value: bool) {
     unsafe { champlain_view_set_zoom_on_double_click(view, value) }
+}
+
+pub fn add_layer(view: *mut ChamplainView, layer: *mut ChamplainLayer) {
+    unsafe { champlain_view_add_layer(view, layer) }
 }

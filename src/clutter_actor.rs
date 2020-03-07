@@ -15,6 +15,11 @@
  */
 
 use crate::clutter::ClutterActor;
+use crate::layer::ChamplainLayer;
+
+pub fn to_champlain_layer(input: *mut ClutterActor) -> *mut ChamplainLayer {
+    unsafe { &mut *(input as *mut ChamplainLayer) }
+}
 
 #[link(name = "clutter-1.0")]
 extern "C" {
