@@ -22,6 +22,10 @@ pub struct ChamplainLocation {
     _private: [u8; 0],
 }
 
+pub fn to_location(actor: *mut ClutterActor) -> *mut ChamplainLocation {
+    unsafe { std::mem::transmute::<*mut ClutterActor, *mut ChamplainLocation>(actor) }
+}
+
 /// ChamplainMarker functions
 #[link(name = "champlain-0.12")]
 extern "C" {
@@ -30,10 +34,6 @@ extern "C" {
         lat: c_double,
         lon: c_double,
     );
-}
-
-pub fn actor_to_location(actor: *mut ClutterActor) -> *mut ChamplainLocation {
-    unsafe { std::mem::transmute::<*mut ClutterActor, *mut ChamplainLocation>(actor) }
 }
 
 pub fn set_location(location: *mut ChamplainLocation, lat: f64, lon: f64) {
