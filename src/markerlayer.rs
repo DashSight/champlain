@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+use crate::marker::ChamplainMarker;
+
 #[repr(C)]
 pub struct ChamplainMarkerLayer {
     _private: [u8; 0],
@@ -34,6 +36,11 @@ pub enum ChamplainSelectionMode {
 extern "C" {
     fn champlain_marker_layer_new() -> *mut ChamplainMarkerLayer;
     fn champlain_marker_layer_new_full(mode: ChamplainSelectionMode) -> *mut ChamplainMarkerLayer;
+    fn champlain_marker_layer_add_marker(
+        layer: *mut ChamplainMarkerLayer,
+        marker: *mut ChamplainMarker,
+    );
+    fn champlain_marker_layer_animate_in_all_markers(layer: *mut ChamplainMarkerLayer);
 }
 
 pub fn new() -> *mut ChamplainMarkerLayer {
@@ -42,4 +49,12 @@ pub fn new() -> *mut ChamplainMarkerLayer {
 
 pub fn new_full(mode: ChamplainSelectionMode) -> *mut ChamplainMarkerLayer {
     unsafe { champlain_marker_layer_new_full(mode) }
+}
+
+pub fn add_marker(layer: *mut ChamplainMarkerLayer, marker: *mut ChamplainMarker) {
+    unsafe { champlain_marker_layer_add_marker(layer, marker) }
+}
+
+pub fn animate_in_all_markers(layer: *mut ChamplainMarkerLayer) {
+    unsafe { champlain_marker_layer_animate_in_all_markers(layer) }
 }

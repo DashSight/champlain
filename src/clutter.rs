@@ -17,6 +17,8 @@
 use libc::{c_char, c_int};
 use std::ptr;
 
+use crate::marker::ChamplainMarker;
+
 #[repr(C)]
 #[derive(Clone)]
 pub struct ClutterActor {
@@ -32,6 +34,10 @@ pub enum Error {
     CLUTTER_INIT_ERROR_THREADS = -1,
     CLUTTER_INIT_ERROR_BACKEND = -2,
     CLUTTER_INIT_ERROR_INTERNAL = -3,
+}
+
+pub fn to_champlain_marker(input: *mut ClutterActor) -> *mut ChamplainMarker {
+    unsafe { &mut *(input as *mut ChamplainMarker) }
 }
 
 #[link(name = "clutter-1.0")]
