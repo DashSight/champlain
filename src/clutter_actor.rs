@@ -27,5 +27,5 @@ pub fn actor_add_child(me: *mut ClutterActor, child: *mut ClutterActor) {
 }
 
 pub fn set_reactive(actor: *mut ClutterActor, reactive: bool) {
-	unsafe { clutter_actor_set_reactive(actor, reactive) }
+    unsafe { clutter_actor_set_reactive(actor, reactive) }
 }

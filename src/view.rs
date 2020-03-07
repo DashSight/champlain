@@ -57,5 +57,5 @@ pub fn set_kinetic_mode(view: *mut ChamplainView, mode: bool) {
 }
 
 pub fn set_zoom_on_double_click(view: *mut ChamplainView, value: bool) {
-	unsafe { champlain_view_set_zoom_on_double_click(view, value) }
+    unsafe { champlain_view_set_zoom_on_double_click(view, value) }
 }
