@@ -16,12 +16,22 @@
 
 use crate::clutter::ClutterActor;
 
+#[repr(C)]
+pub struct ChamplainMarker {
+    _private: [u8; 0],
+}
+
 /// ChamplainMarker functions
 #[link(name = "champlain-0.12")]
 extern "C" {
     fn champlain_marker_new() -> *mut ClutterActor;
+    fn champlain_marker_animate_in(marker: *mut ChamplainMarker);
 }
 
 pub fn new() -> *mut ClutterActor {
     unsafe { champlain_marker_new() }
+}
+
+pub fn animate_in(marker: *mut ChamplainMarker) {
+    unsafe { champlain_marker_animate_in(marker) }
 }
