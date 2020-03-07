@@ -20,6 +20,7 @@ pub mod view;
 
 pub mod clutter;
 pub mod clutter_actor;
+pub mod clutter_colour;
 pub mod gtk_clutter;
 pub mod layer;
 pub mod location;
