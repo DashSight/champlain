@@ -17,8 +17,6 @@
 use libc::{c_char, c_int};
 use std::ptr;
 
-use crate::marker::ChamplainMarker;
-
 #[repr(C)]
 #[derive(Clone)]
 pub struct ClutterActor {
