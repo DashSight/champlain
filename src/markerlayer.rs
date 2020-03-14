@@ -46,6 +46,7 @@ extern "C" {
         marker: *mut ChamplainMarker,
     );
     fn champlain_marker_layer_animate_in_all_markers(layer: *mut ChamplainMarkerLayer);
+    fn champlain_marker_layer_show_all_markers(layer: *mut ChamplainMarkerLayer);
 }
 
 pub fn new() -> *mut ChamplainMarkerLayer {
@@ -62,4 +63,8 @@ pub fn add_marker(layer: *mut ChamplainMarkerLayer, marker: *mut ChamplainMarker
 
 pub fn animate_in_all_markers(layer: *mut ChamplainMarkerLayer) {
     unsafe { champlain_marker_layer_animate_in_all_markers(layer) }
+}
+
+pub fn show_all_markers(layer: *mut ChamplainMarkerLayer) {
+    unsafe { champlain_marker_layer_show_all_markers(layer) }
 }
