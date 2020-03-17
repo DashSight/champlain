@@ -26,6 +26,6 @@ pub mod gtk_clutter;
 pub mod layer;
 pub mod location;
 pub mod marker;
-pub mod markerlayer;
+pub mod marker_layer;
 pub mod path_layer;
 pub mod point;
