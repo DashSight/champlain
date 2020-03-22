@@ -17,11 +17,17 @@
 use crate::clutter::ClutterActor;
 use crate::clutter_colour::ClutterColor;
 
+#[repr(C)]
+pub struct ChamplainPoint {
+    _private: [u8; 0],
+}
+
 /// ChamplainMarker functions
 #[link(name = "champlain-0.12")]
 extern "C" {
     fn champlain_point_new() -> *mut ClutterActor;
     fn champlain_point_new_full(size: f64, colour: *const ClutterColor) -> *mut ClutterActor;
+    fn champlain_point_set_color(point: *mut ChamplainPoint, colour: *const ClutterColor);
 }
 
 pub fn new() -> *mut ClutterActor {
@@ -30,4 +36,8 @@ pub fn new() -> *mut ClutterActor {
 
 pub fn new_full(size: f64, colour: *const ClutterColor) -> *mut ClutterActor {
     unsafe { champlain_point_new_full(size, colour) }
+}
+
+pub fn set_colour(point: *mut ChamplainPoint, colour: *const ClutterColor) {
+    unsafe { champlain_point_set_color(point, colour) }
 }
