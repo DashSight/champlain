@@ -24,9 +24,6 @@ pub struct ChamplainView {
     _private: [u8; 0],
 }
 
-unsafe impl Send for ChamplainView {}
-unsafe impl Sync for ChamplainView {}
-
 pub fn to_clutter_actor(input: *mut ChamplainView) -> *mut ClutterActor {
     unsafe { &mut *(input as *mut ClutterActor) }
 }
