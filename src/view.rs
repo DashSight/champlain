@@ -37,6 +37,7 @@ extern "C" {
     fn champlain_view_set_kinetic_mode(view: *mut ChamplainView, mode: bool);
     fn champlain_view_set_zoom_on_double_click(view: *mut ChamplainView, value: bool);
     fn champlain_view_add_layer(view: *mut ChamplainView, layer: *mut ChamplainLayer);
+    fn champlain_view_remove_layer(view: *mut ChamplainView, layer: *mut ChamplainLayer);
 }
 
 pub fn new() -> Option<*mut ChamplainView> {
@@ -61,4 +62,8 @@ pub fn set_zoom_on_double_click(view: *mut ChamplainView, value: bool) {
 
 pub fn add_layer(view: *mut ChamplainView, layer: *mut ChamplainLayer) {
     unsafe { champlain_view_add_layer(view, layer) }
+}
+
+pub fn remove_layer(view: *mut ChamplainView, layer: *mut ChamplainLayer) {
+    unsafe { champlain_view_remove_layer(view, layer) }
 }
