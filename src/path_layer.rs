@@ -37,6 +37,9 @@ extern "C" {
         layer: *mut ChamplainPathLayer,
         location: *mut ChamplainLocation,
     );
+    fn champlain_path_layer_remove_all (
+        layer: *mut ChamplainPathLayer,
+    );
     fn champlain_path_layer_set_visible(layer: *mut ChamplainPathLayer, value: bool);
 }
 
@@ -50,6 +53,10 @@ pub fn add_node(layer: *mut ChamplainPathLayer, location: *mut ChamplainLocation
 
 pub fn remove_node(layer: *mut ChamplainPathLayer, location: *mut ChamplainLocation) {
     unsafe { champlain_path_layer_remove_node(layer, location) }
+}
+
+pub fn remove_all(layer: *mut ChamplainPathLayer) {
+    unsafe { champlain_path_layer_remove_all(layer) }
 }
 
 pub fn set_visible(layer: *mut ChamplainPathLayer, value: bool) {
