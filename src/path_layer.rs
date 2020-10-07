@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+use crate::clutter_colour::ClutterColor;
 use crate::layer::ChamplainLayer;
 use crate::location::ChamplainLocation;
 
@@ -37,10 +38,12 @@ extern "C" {
         layer: *mut ChamplainPathLayer,
         location: *mut ChamplainLocation,
     );
-    fn champlain_path_layer_remove_all (
-        layer: *mut ChamplainPathLayer,
-    );
+    fn champlain_path_layer_remove_all(layer: *mut ChamplainPathLayer);
     fn champlain_path_layer_set_visible(layer: *mut ChamplainPathLayer, value: bool);
+    fn champlain_path_layer_set_stroke_color(
+        layer: *mut ChamplainPathLayer,
+        colour: *const ClutterColor,
+    );
 }
 
 pub fn new() -> *mut ChamplainPathLayer {
@@ -61,4 +64,8 @@ pub fn remove_all(layer: *mut ChamplainPathLayer) {
 
 pub fn set_visible(layer: *mut ChamplainPathLayer, value: bool) {
     unsafe { champlain_path_layer_set_visible(layer, value) }
+}
+
+pub fn set_stroke_colour(layer: *mut ChamplainPathLayer, colour: *const ClutterColor) {
+    unsafe { champlain_path_layer_set_stroke_color(layer, colour) }
 }

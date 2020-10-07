@@ -28,6 +28,7 @@ extern "C" {
     fn champlain_point_new() -> *mut ClutterActor;
     fn champlain_point_new_full(size: f64, colour: *const ClutterColor) -> *mut ClutterActor;
     fn champlain_point_set_color(point: *mut ChamplainPoint, colour: *const ClutterColor);
+    fn champlain_point_get_color(point: *mut ChamplainPoint) -> *const ClutterColor;
 }
 
 pub fn new() -> *mut ClutterActor {
@@ -40,4 +41,8 @@ pub fn new_full(size: f64, colour: *const ClutterColor) -> *mut ClutterActor {
 
 pub fn set_colour(point: *mut ChamplainPoint, colour: *const ClutterColor) {
     unsafe { champlain_point_set_color(point, colour) }
+}
+
+pub fn get_colour(point: *mut ChamplainPoint) -> *const ClutterColor {
+    unsafe { champlain_point_get_color(point) }
 }
