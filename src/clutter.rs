@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
+use crate::layer::ChamplainLayer;
+use crate::location::ChamplainLocation;
+use crate::marker::ChamplainMarker;
 use crate::point::{ChamplainPoint, ChamplainPointSys};
 use libc::{c_char, c_int};
 use std::ptr;
 
-#[derive(Clone)]
 pub struct ClutterActor {
     ptr: *mut ClutterActorSys,
 }
@@ -32,8 +34,24 @@ impl ClutterActor {
         self.ptr
     }
 
-    pub fn to_point(self) -> ChamplainPoint {
+    // TODO: This is unsafe as now we have two copied of self.get_ptr()
+    pub fn to_point(&self) -> ChamplainPoint {
         unsafe { ChamplainPoint::new(&mut *(self.get_ptr() as *mut ChamplainPointSys)) }
+    }
+
+    // TODO: This is unsafe as now we have two copied of self.get_ptr()
+    pub fn to_champlain_layer(&self) -> *mut ChamplainLayer {
+        unsafe { &mut *(self.get_ptr() as *mut ChamplainLayer) }
+    }
+
+    // TODO: This is unsafe as now we have two copied of self.get_ptr()
+    pub fn to_champlain_marker(&self) -> *mut ChamplainMarker {
+        unsafe { &mut *(self.get_ptr() as *mut ChamplainMarker) }
+    }
+
+    // TODO: This is unsafe as now we have two copied of self.get_ptr()
+    pub fn to_location(&self) -> *mut ChamplainLocation {
+        unsafe { &mut *(self.get_ptr() as *mut ChamplainLocation) }
     }
 }
 

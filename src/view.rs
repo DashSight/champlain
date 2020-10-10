@@ -16,7 +16,7 @@
 
 use libc::{c_double, c_uint};
 
-use crate::clutter::ClutterActorSys;
+use crate::clutter::{ClutterActor, ClutterActorSys};
 use crate::layer::ChamplainLayer;
 
 pub struct ChamplainView {
@@ -31,15 +31,16 @@ impl ChamplainView {
     pub(crate) fn get_ptr(&self) -> *mut ChamplainViewSys {
         self.ptr
     }
+
+    // TODO: This is unsafe as now we have two copied of self.get_ptr()
+    pub fn to_clutter_actor(&self) -> ClutterActor {
+        unsafe { ClutterActor::new(&mut *(self.get_ptr() as *mut ClutterActorSys)) }
+    }
 }
 
 #[repr(C)]
 pub(crate) struct ChamplainViewSys {
     _private: [u8; 0],
-}
-
-pub fn to_clutter_actor(input: &ChamplainView) -> *mut ClutterActorSys {
-    unsafe { &mut *(input.get_ptr() as *mut ClutterActorSys) }
 }
 
 /// ChamplainViewSys functions

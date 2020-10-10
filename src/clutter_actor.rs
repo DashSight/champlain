@@ -15,21 +15,6 @@
  */
 
 use crate::clutter::{ClutterActor, ClutterActorSys};
-use crate::layer::ChamplainLayer;
-use crate::location::ChamplainLocation;
-use crate::marker::ChamplainMarker;
-
-pub fn to_champlain_layer(input: *mut ClutterActor) -> *mut ChamplainLayer {
-    unsafe { &mut *(input as *mut ChamplainLayer) }
-}
-
-pub fn to_champlain_marker(input: *mut ClutterActor) -> *mut ChamplainMarker {
-    unsafe { &mut *(input as *mut ChamplainMarker) }
-}
-
-pub fn to_location(actor: *mut ClutterActor) -> *mut ChamplainLocation {
-    unsafe { std::mem::transmute::<*mut ClutterActor, *mut ChamplainLocation>(actor) }
-}
 
 #[link(name = "clutter-1.0")]
 extern "C" {
