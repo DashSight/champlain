@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-use crate::clutter::ClutterActorSys;
+use crate::clutter::{ClutterActor, ClutterActorSys};
 use crate::view::{ChamplainView, ChamplainViewSys};
 
 #[repr(C)]
@@ -26,8 +26,8 @@ pub struct ChamplainBoundingBox {
     _private: [u8; 0],
 }
 
-pub fn to_clutter_actor(input: *mut ChamplainLayer) -> *mut ClutterActorSys {
-    unsafe { &mut *(input as *mut ClutterActorSys) }
+pub fn to_clutter_actor(input: *mut ChamplainLayer) -> ClutterActor {
+    unsafe { ClutterActor::new(&mut *(input as *mut ClutterActorSys)) }
 }
 
 /// ChamplainLayer functions

@@ -17,8 +17,22 @@
 use crate::clutter::{ClutterActor, ClutterActorSys};
 use crate::clutter_colour::ClutterColor;
 
-#[repr(C)]
 pub struct ChamplainPoint {
+    ptr: *mut ChamplainPointSys,
+}
+
+impl ChamplainPoint {
+    pub(crate) fn new(ptr: *mut ChamplainPointSys) -> Self {
+        Self { ptr }
+    }
+
+    fn get_ptr(&self) -> *mut ChamplainPointSys {
+        self.ptr
+    }
+}
+
+#[repr(C)]
+pub(crate) struct ChamplainPointSys {
     _private: [u8; 0],
 }
 
@@ -27,8 +41,8 @@ pub struct ChamplainPoint {
 extern "C" {
     fn champlain_point_new() -> *mut ClutterActorSys;
     fn champlain_point_new_full(size: f64, colour: *const ClutterColor) -> *mut ClutterActorSys;
-    fn champlain_point_set_color(point: *mut ChamplainPoint, colour: *const ClutterColor);
-    fn champlain_point_get_color(point: *mut ChamplainPoint) -> *const ClutterColor;
+    fn champlain_point_set_color(point: *mut ChamplainPointSys, colour: *const ClutterColor);
+    fn champlain_point_get_color(point: *mut ChamplainPointSys) -> *const ClutterColor;
 }
 
 pub fn new() -> ClutterActor {
@@ -39,10 +53,10 @@ pub fn new_full(size: f64, colour: *const ClutterColor) -> ClutterActor {
     unsafe { ClutterActor::new(champlain_point_new_full(size, colour)) }
 }
 
-pub fn set_colour(point: *mut ChamplainPoint, colour: *const ClutterColor) {
-    unsafe { champlain_point_set_color(point, colour) }
+pub fn set_colour(point: &mut ChamplainPoint, colour: *const ClutterColor) {
+    unsafe { champlain_point_set_color(point.get_ptr(), colour) }
 }
 
-pub fn get_colour(point: *mut ChamplainPoint) -> *const ClutterColor {
-    unsafe { champlain_point_get_color(point) }
+pub fn get_colour(point: &ChamplainPoint) -> *const ClutterColor {
+    unsafe { champlain_point_get_color(point.get_ptr()) }
 }

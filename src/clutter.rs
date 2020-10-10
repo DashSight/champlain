@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+use crate::point::{ChamplainPoint, ChamplainPointSys};
 use libc::{c_char, c_int};
 use std::ptr;
 
@@ -29,6 +30,10 @@ impl ClutterActor {
 
     pub(crate) fn get_ptr(&self) -> *mut ClutterActorSys {
         self.ptr
+    }
+
+    pub fn to_point(self) -> ChamplainPoint {
+        unsafe { ChamplainPoint::new(&mut *(self.get_ptr() as *mut ChamplainPointSys)) }
     }
 }
 
