@@ -45,6 +45,10 @@ extern "C" {
         layer: *mut ChamplainMarkerLayer,
         marker: *mut ChamplainMarker,
     );
+    fn champlain_marker_layer_remove_marker(
+        layer: *mut ChamplainMarkerLayer,
+        marker: *mut ChamplainMarker,
+    );
     fn champlain_marker_layer_animate_in_all_markers(layer: *mut ChamplainMarkerLayer);
     fn champlain_marker_layer_show_all_markers(layer: *mut ChamplainMarkerLayer);
 }
@@ -59,6 +63,10 @@ pub fn new_full(mode: ChamplainSelectionMode) -> *mut ChamplainMarkerLayer {
 
 pub fn add_marker(layer: *mut ChamplainMarkerLayer, marker: *mut ChamplainMarker) {
     unsafe { champlain_marker_layer_add_marker(layer, marker) }
+}
+
+pub fn remove_marker(layer: *mut ChamplainMarkerLayer, marker: *mut ChamplainMarker) {
+    unsafe { champlain_marker_layer_remove_marker(layer, marker) }
 }
 
 pub fn animate_in_all_markers(layer: *mut ChamplainMarkerLayer) {
