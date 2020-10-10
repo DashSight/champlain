@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-use crate::layer::ChamplainLayer;
+use crate::layer::{ChamplainLayer, ChamplainLayerSys};
 use crate::marker::ChamplainMarker;
 
 #[repr(C)]
@@ -32,8 +32,8 @@ pub enum ChamplainSelectionMode {
     ChamplainSelectionMultiple,
 }
 
-pub fn to_layer(input: *mut ChamplainMarkerLayer) -> *mut ChamplainLayer {
-    unsafe { &mut *(input as *mut ChamplainLayer) }
+pub fn to_layer(input: *mut ChamplainMarkerLayer) -> ChamplainLayer {
+    unsafe { ChamplainLayer::new(&mut *(input as *mut ChamplainLayerSys)) }
 }
 
 /// ChamplainMarkerLayer functions

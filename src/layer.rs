@@ -17,8 +17,27 @@
 use crate::clutter::{ClutterActor, ClutterActorSys};
 use crate::view::{ChamplainView, ChamplainViewSys};
 
-#[repr(C)]
 pub struct ChamplainLayer {
+    ptr: *mut ChamplainLayerSys,
+}
+
+impl ChamplainLayer {
+    pub(crate) fn new(ptr: *mut ChamplainLayerSys) -> Self {
+        Self { ptr }
+    }
+
+    pub(crate) fn get_ptr(&self) -> *mut ChamplainLayerSys {
+        self.ptr
+    }
+
+    // TODO: This is unsafe as now we have two copied of self.get_ptr()
+    pub fn to_clutter_actor(&self) -> ClutterActor {
+        unsafe { ClutterActor::new(&mut *(self.get_ptr() as *mut ClutterActorSys)) }
+    }
+}
+
+#[repr(C)]
+pub struct ChamplainLayerSys {
     _private: [u8; 0],
 }
 #[repr(C)]
@@ -26,21 +45,18 @@ pub struct ChamplainBoundingBox {
     _private: [u8; 0],
 }
 
-pub fn to_clutter_actor(input: *mut ChamplainLayer) -> ClutterActor {
-    unsafe { ClutterActor::new(&mut *(input as *mut ClutterActorSys)) }
-}
-
 /// ChamplainLayer functions
 #[link(name = "champlain-0.12")]
 extern "C" {
-    fn champlain_layer_set_view(layer: *mut ChamplainLayer, view: *mut ChamplainViewSys);
-    fn champlain_layer_get_bounding_box(layer: *mut ChamplainLayer) -> *mut ChamplainBoundingBox;
+    fn champlain_layer_set_view(layer: *mut ChamplainLayerSys, view: *mut ChamplainViewSys);
+    fn champlain_layer_get_bounding_box(layer: *mut ChamplainLayerSys)
+        -> *mut ChamplainBoundingBox;
 }
 
-pub fn set_view(layer: *mut ChamplainLayer, view: &ChamplainView) {
-    unsafe { champlain_layer_set_view(layer, view.get_ptr()) }
+pub fn set_view(layer: &mut ChamplainLayer, view: &ChamplainView) {
+    unsafe { champlain_layer_set_view(layer.get_ptr(), view.get_ptr()) }
 }
 
-pub fn get_bounding_box(layer: *mut ChamplainLayer) -> *mut ChamplainBoundingBox {
-    unsafe { champlain_layer_get_bounding_box(layer) }
+pub fn get_bounding_box(layer: &mut ChamplainLayer) -> *mut ChamplainBoundingBox {
+    unsafe { champlain_layer_get_bounding_box(layer.get_ptr()) }
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-use crate::layer::ChamplainLayer;
+use crate::layer::{ChamplainLayer, ChamplainLayerSys};
 use crate::location::ChamplainLocation;
 use crate::marker::ChamplainMarker;
 use crate::point::{ChamplainPoint, ChamplainPointSys};
@@ -40,8 +40,8 @@ impl ClutterActor {
     }
 
     // TODO: This is unsafe as now we have two copied of self.get_ptr()
-    pub fn to_champlain_layer(&self) -> *mut ChamplainLayer {
-        unsafe { &mut *(self.get_ptr() as *mut ChamplainLayer) }
+    pub fn to_champlain_layer(&self) -> ChamplainLayer {
+        unsafe { ChamplainLayer::new(&mut *(self.get_ptr() as *mut ChamplainLayerSys)) }
     }
 
     // TODO: This is unsafe as now we have two copied of self.get_ptr()

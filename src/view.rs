@@ -17,7 +17,7 @@
 use libc::{c_double, c_uint};
 
 use crate::clutter::{ClutterActor, ClutterActorSys};
-use crate::layer::ChamplainLayer;
+use crate::layer::{ChamplainLayer, ChamplainLayerSys};
 
 pub struct ChamplainView {
     ptr: *mut ChamplainViewSys,
@@ -55,8 +55,8 @@ extern "C" {
     fn champlain_view_set_zoom_level(view: *mut ChamplainViewSys, zoom_level: c_uint);
     fn champlain_view_set_kinetic_mode(view: *mut ChamplainViewSys, mode: bool);
     fn champlain_view_set_zoom_on_double_click(view: *mut ChamplainViewSys, value: bool);
-    fn champlain_view_add_layer(view: *mut ChamplainViewSys, layer: *mut ChamplainLayer);
-    fn champlain_view_remove_layer(view: *mut ChamplainViewSys, layer: *mut ChamplainLayer);
+    fn champlain_view_add_layer(view: *mut ChamplainViewSys, layer: *mut ChamplainLayerSys);
+    fn champlain_view_remove_layer(view: *mut ChamplainViewSys, layer: *mut ChamplainLayerSys);
 }
 
 pub fn new() -> ChamplainView {
@@ -79,10 +79,10 @@ pub fn set_zoom_on_double_click(view: &mut ChamplainView, value: bool) {
     unsafe { champlain_view_set_zoom_on_double_click(view.get_ptr(), value) }
 }
 
-pub fn add_layer(view: &mut ChamplainView, layer: *mut ChamplainLayer) {
-    unsafe { champlain_view_add_layer(view.get_ptr(), layer) }
+pub fn add_layer(view: &mut ChamplainView, layer: &mut ChamplainLayer) {
+    unsafe { champlain_view_add_layer(view.get_ptr(), layer.get_ptr()) }
 }
 
-pub fn remove_layer(view: &mut ChamplainView, layer: *mut ChamplainLayer) {
-    unsafe { champlain_view_remove_layer(view.get_ptr(), layer) }
+pub fn remove_layer(view: &mut ChamplainView, layer: &mut ChamplainLayer) {
+    unsafe { champlain_view_remove_layer(view.get_ptr(), layer.get_ptr()) }
 }

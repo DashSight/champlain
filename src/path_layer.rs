@@ -15,7 +15,7 @@
  */
 
 use crate::clutter_colour::ClutterColor;
-use crate::layer::ChamplainLayer;
+use crate::layer::{ChamplainLayer, ChamplainLayerSys};
 use crate::location::ChamplainLocation;
 
 #[repr(C)]
@@ -23,8 +23,8 @@ pub struct ChamplainPathLayer {
     _private: [u8; 0],
 }
 
-pub fn to_layer(input: *mut ChamplainPathLayer) -> *mut ChamplainLayer {
-    unsafe { &mut *(input as *mut ChamplainLayer) }
+pub fn to_layer(input: *mut ChamplainPathLayer) -> ChamplainLayer {
+    unsafe { ChamplainLayer::new(&mut *(input as *mut ChamplainLayerSys)) }
 }
 
 #[link(name = "champlain-0.12")]
