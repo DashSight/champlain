@@ -15,7 +15,7 @@
  */
 
 use crate::clutter::ClutterActor;
-use crate::view::ChamplainView;
+use crate::view::{ChamplainView, ChamplainViewSys};
 
 #[repr(C)]
 pub struct ChamplainLayer {
@@ -33,12 +33,12 @@ pub fn to_clutter_actor(input: *mut ChamplainLayer) -> *mut ClutterActor {
 /// ChamplainLayer functions
 #[link(name = "champlain-0.12")]
 extern "C" {
-    fn champlain_layer_set_view(layer: *mut ChamplainLayer, view: *mut ChamplainView);
+    fn champlain_layer_set_view(layer: *mut ChamplainLayer, view: *mut ChamplainViewSys);
     fn champlain_layer_get_bounding_box(layer: *mut ChamplainLayer) -> *mut ChamplainBoundingBox;
 }
 
-pub fn set_view(layer: *mut ChamplainLayer, view: *mut ChamplainView) {
-    unsafe { champlain_layer_set_view(layer, view) }
+pub fn set_view(layer: *mut ChamplainLayer, view: &ChamplainView) {
+    unsafe { champlain_layer_set_view(layer, view.get_ptr()) }
 }
 
 pub fn get_bounding_box(layer: *mut ChamplainLayer) -> *mut ChamplainBoundingBox {

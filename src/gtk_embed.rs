@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-use crate::view::ChamplainView;
+use crate::view::{ChamplainView, ChamplainViewSys};
 use glib::translate::FromGlibPtrNone;
 use glib::translate::ToGlibPtr;
 
 #[link(name = "champlain-gtk-0.12")]
 extern "C" {
     fn gtk_champlain_embed_new() -> *mut gtk_sys::GtkWidget;
-    fn gtk_champlain_embed_get_view(embed: *mut gtk_sys::GtkWidget) -> *mut ChamplainView;
+    fn gtk_champlain_embed_get_view(embed: *mut gtk_sys::GtkWidget) -> *mut ChamplainViewSys;
 }
 
 pub fn new() -> gtk::Widget {
     unsafe { gtk::Widget::from_glib_none(gtk_champlain_embed_new()) }
 }
 
-pub fn get_view(embed: gtk::Widget) -> Option<*mut ChamplainView> {
-    unsafe { Some(gtk_champlain_embed_get_view(embed.to_glib_none().0)) }
+pub fn get_view(embed: gtk::Widget) -> ChamplainView {
+    unsafe { ChamplainView::new(gtk_champlain_embed_get_view(embed.to_glib_none().0)) }
 }
