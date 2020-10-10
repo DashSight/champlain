@@ -15,17 +15,19 @@
  */
 
 use crate::view::ChamplainView;
+use glib::translate::FromGlibPtrNone;
+use glib::translate::ToGlibPtr;
 
 #[link(name = "champlain-gtk-0.12")]
 extern "C" {
-    fn gtk_champlain_embed_new() -> gtk::Widget;
-    fn gtk_champlain_embed_get_view(embed: gtk::Widget) -> *mut ChamplainView;
+    fn gtk_champlain_embed_new() -> *mut gtk_sys::GtkWidget;
+    fn gtk_champlain_embed_get_view(embed: *mut gtk_sys::GtkWidget) -> *mut ChamplainView;
 }
 
 pub fn new() -> gtk::Widget {
-    unsafe { gtk_champlain_embed_new() }
+    unsafe { gtk::Widget::from_glib_none(gtk_champlain_embed_new()) }
 }
 
 pub fn get_view(embed: gtk::Widget) -> Option<*mut ChamplainView> {
-    unsafe { Some(gtk_champlain_embed_get_view(embed)) }
+    unsafe { Some(gtk_champlain_embed_get_view(embed.to_glib_none().0)) }
 }
