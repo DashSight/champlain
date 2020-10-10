@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-use crate::clutter::ClutterActor;
+use crate::clutter::{ClutterActor, ClutterActorSys};
 
 #[repr(C)]
 pub struct ChamplainMarker {
@@ -24,12 +24,12 @@ pub struct ChamplainMarker {
 /// ChamplainMarker functions
 #[link(name = "champlain-0.12")]
 extern "C" {
-    fn champlain_marker_new() -> *mut ClutterActor;
+    fn champlain_marker_new() -> *mut ClutterActorSys;
     fn champlain_marker_animate_in(marker: *mut ChamplainMarker);
 }
 
-pub fn new() -> *mut ClutterActor {
-    unsafe { champlain_marker_new() }
+pub fn new() -> ClutterActor {
+    unsafe { ClutterActor::new(champlain_marker_new()) }
 }
 
 pub fn animate_in(marker: *mut ChamplainMarker) {

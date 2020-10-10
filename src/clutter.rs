@@ -17,9 +17,23 @@
 use libc::{c_char, c_int};
 use std::ptr;
 
-#[repr(C)]
 #[derive(Clone)]
 pub struct ClutterActor {
+    ptr: *mut ClutterActorSys,
+}
+
+impl ClutterActor {
+    pub(crate) fn new(ptr: *mut ClutterActorSys) -> Self {
+        Self { ptr }
+    }
+
+    pub(crate) fn get_ptr(&self) -> *mut ClutterActorSys {
+        self.ptr
+    }
+}
+
+#[repr(C)]
+pub struct ClutterActorSys {
     _private: [u8; 0],
 }
 
@@ -37,13 +51,13 @@ pub enum Error {
 #[link(name = "clutter-1.0")]
 extern "C" {
     fn clutter_init(argc: *const c_int, argv: *const *const c_char) -> Error;
-    fn clutter_stage_new() -> *mut ClutterActor;
+    fn clutter_stage_new() -> *mut ClutterActorSys;
 }
 
 pub fn init() -> Error {
     unsafe { clutter_init(ptr::null(), ptr::null()) }
 }
 
-pub fn stage_new() -> *mut ClutterActor {
-    unsafe { clutter_stage_new() }
+pub fn stage_new() -> ClutterActor {
+    unsafe { ClutterActor::new(clutter_stage_new()) }
 }

@@ -16,7 +16,7 @@
 
 use libc::{c_double, c_uint};
 
-use crate::clutter::ClutterActor;
+use crate::clutter::ClutterActorSys;
 use crate::layer::ChamplainLayer;
 
 pub struct ChamplainView {
@@ -38,8 +38,8 @@ pub(crate) struct ChamplainViewSys {
     _private: [u8; 0],
 }
 
-pub fn to_clutter_actor(input: &ChamplainView) -> *mut ClutterActor {
-    unsafe { &mut *(input.get_ptr() as *mut ClutterActor) }
+pub fn to_clutter_actor(input: &ChamplainView) -> *mut ClutterActorSys {
+    unsafe { &mut *(input.get_ptr() as *mut ClutterActorSys) }
 }
 
 /// ChamplainViewSys functions

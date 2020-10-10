@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-use crate::clutter::ClutterActor;
+use crate::clutter::{ClutterActor, ClutterActorSys};
 use crate::layer::ChamplainLayer;
 use crate::location::ChamplainLocation;
 use crate::marker::ChamplainMarker;
@@ -38,19 +38,19 @@ pub fn to_point(input: *mut ClutterActor) -> *mut ChamplainPoint {
 
 #[link(name = "clutter-1.0")]
 extern "C" {
-    fn clutter_actor_add_child(me: *mut ClutterActor, child: *mut ClutterActor);
-    fn clutter_actor_set_reactive(actor: *mut ClutterActor, reactive: bool);
-    fn clutter_actor_show(me: *mut ClutterActor);
+    fn clutter_actor_add_child(me: *mut ClutterActorSys, child: *mut ClutterActorSys);
+    fn clutter_actor_set_reactive(actor: *mut ClutterActorSys, reactive: bool);
+    fn clutter_actor_show(me: *mut ClutterActorSys);
 }
 
-pub fn actor_add_child(me: *mut ClutterActor, child: *mut ClutterActor) {
-    unsafe { clutter_actor_add_child(me, child) }
+pub fn actor_add_child(me: &mut ClutterActor, child: &mut ClutterActor) {
+    unsafe { clutter_actor_add_child(me.get_ptr(), child.get_ptr()) }
 }
 
-pub fn set_reactive(actor: *mut ClutterActor, reactive: bool) {
-    unsafe { clutter_actor_set_reactive(actor, reactive) }
+pub fn set_reactive(actor: &mut ClutterActor, reactive: bool) {
+    unsafe { clutter_actor_set_reactive(actor.get_ptr(), reactive) }
 }
 
-pub fn show(me: *mut ClutterActor) {
-    unsafe { clutter_actor_show(me) }
+pub fn show(me: &mut ClutterActor) {
+    unsafe { clutter_actor_show(me.get_ptr()) }
 }

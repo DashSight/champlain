@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-use crate::clutter::ClutterActor;
+use crate::clutter::{ClutterActor, ClutterActorSys};
 use crate::clutter_colour::ClutterColor;
 
 #[repr(C)]
@@ -25,18 +25,18 @@ pub struct ChamplainPoint {
 /// ChamplainMarker functions
 #[link(name = "champlain-0.12")]
 extern "C" {
-    fn champlain_point_new() -> *mut ClutterActor;
-    fn champlain_point_new_full(size: f64, colour: *const ClutterColor) -> *mut ClutterActor;
+    fn champlain_point_new() -> *mut ClutterActorSys;
+    fn champlain_point_new_full(size: f64, colour: *const ClutterColor) -> *mut ClutterActorSys;
     fn champlain_point_set_color(point: *mut ChamplainPoint, colour: *const ClutterColor);
     fn champlain_point_get_color(point: *mut ChamplainPoint) -> *const ClutterColor;
 }
 
-pub fn new() -> *mut ClutterActor {
-    unsafe { champlain_point_new() }
+pub fn new() -> ClutterActor {
+    unsafe { ClutterActor::new(champlain_point_new()) }
 }
 
-pub fn new_full(size: f64, colour: *const ClutterColor) -> *mut ClutterActor {
-    unsafe { champlain_point_new_full(size, colour) }
+pub fn new_full(size: f64, colour: *const ClutterColor) -> ClutterActor {
+    unsafe { ClutterActor::new(champlain_point_new_full(size, colour)) }
 }
 
 pub fn set_colour(point: *mut ChamplainPoint, colour: *const ClutterColor) {
