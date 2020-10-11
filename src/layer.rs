@@ -17,25 +17,6 @@
 use crate::clutter::{ClutterActor, ClutterActorSys};
 use crate::view::{ChamplainView, ChamplainViewSys};
 
-pub struct ChamplainLayer {
-    ptr: *mut ChamplainLayerSys,
-}
-
-impl ChamplainLayer {
-    pub(crate) fn new(ptr: *mut ChamplainLayerSys) -> Self {
-        Self { ptr }
-    }
-
-    pub(crate) fn get_ptr(&self) -> *mut ChamplainLayerSys {
-        self.ptr
-    }
-
-    // TODO: This is unsafe as now we have two copied of self.get_ptr()
-    pub fn to_clutter_actor(&self) -> ClutterActor {
-        unsafe { ClutterActor::new(&mut *(self.get_ptr() as *mut ClutterActorSys)) }
-    }
-}
-
 #[repr(C)]
 pub struct ChamplainLayerSys {
     _private: [u8; 0],
@@ -47,6 +28,28 @@ extern "C" {
     fn champlain_layer_set_view(layer: *mut ChamplainLayerSys, view: *mut ChamplainViewSys);
 }
 
-pub fn set_view(layer: &mut ChamplainLayer, view: &mut ChamplainView) {
-    unsafe { champlain_layer_set_view(layer.get_ptr(), view.get_ptr()) }
+pub struct ChamplainLayer {
+    ptr: *mut ChamplainLayerSys,
+    actor: ClutterActor,
+}
+
+impl ChamplainLayer {
+    pub(crate) fn new_with_ptr(ptr: *mut ChamplainLayerSys) -> Self {
+        Self {
+            ptr,
+            actor: ClutterActor::new(ptr as *mut ClutterActorSys),
+        }
+    }
+
+    pub(crate) fn get_ptr(&mut self) -> *mut ChamplainLayerSys {
+        self.ptr
+    }
+
+    pub fn borrow_mut_actor(&mut self) -> &mut ClutterActor {
+        &mut self.actor
+    }
+
+    pub fn set_view(&mut self, view: &mut ChamplainView) {
+        unsafe { champlain_layer_set_view(self.get_ptr(), view.get_ptr()) }
+    }
 }

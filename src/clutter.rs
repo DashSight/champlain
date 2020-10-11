@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-use crate::layer::{ChamplainLayer, ChamplainLayerSys};
 use libc::{c_char, c_int};
 use std::ptr;
 
@@ -37,11 +36,6 @@ impl ClutterActor {
 
     pub fn stage_new() -> Self {
         unsafe { Self::new(clutter_stage_new()) }
-    }
-
-    // TODO: This is unsafe as now we have two copied of self.get_ptr()
-    pub fn to_champlain_layer(&self) -> ChamplainLayer {
-        unsafe { ChamplainLayer::new(&mut *(self.get_ptr() as *mut ChamplainLayerSys)) }
     }
 
     pub fn actor_add_child(&mut self, child: &mut ClutterActor) {

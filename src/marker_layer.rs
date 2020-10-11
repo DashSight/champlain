@@ -64,7 +64,7 @@ impl ChamplainMarkerLayer {
         Self {
             ptr,
             actor: ClutterActor::new(ptr as *mut ClutterActorSys),
-            layer: ChamplainLayer::new(ptr as *mut ChamplainLayerSys),
+            layer: ChamplainLayer::new_with_ptr(ptr as *mut ChamplainLayerSys),
         }
     }
 
