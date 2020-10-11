@@ -40,23 +40,13 @@ impl ChamplainLayer {
 pub struct ChamplainLayerSys {
     _private: [u8; 0],
 }
-#[repr(C)]
-pub struct ChamplainBoundingBox {
-    _private: [u8; 0],
-}
 
 /// ChamplainLayer functions
 #[link(name = "champlain-0.12")]
 extern "C" {
     fn champlain_layer_set_view(layer: *mut ChamplainLayerSys, view: *mut ChamplainViewSys);
-    fn champlain_layer_get_bounding_box(layer: *mut ChamplainLayerSys)
-        -> *mut ChamplainBoundingBox;
 }
 
 pub fn set_view(layer: &mut ChamplainLayer, view: &ChamplainView) {
     unsafe { champlain_layer_set_view(layer.get_ptr(), view.get_ptr()) }
-}
-
-pub fn get_bounding_box(layer: &mut ChamplainLayer) -> *mut ChamplainBoundingBox {
-    unsafe { champlain_layer_get_bounding_box(layer.get_ptr()) }
 }

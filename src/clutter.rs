@@ -15,7 +15,7 @@
  */
 
 use crate::layer::{ChamplainLayer, ChamplainLayerSys};
-use crate::location::ChamplainLocation;
+use crate::location::{ChamplainLocation, ChamplainLocationSys};
 use crate::marker::ChamplainMarker;
 use crate::point::{ChamplainPoint, ChamplainPointSys};
 use libc::{c_char, c_int};
@@ -50,8 +50,8 @@ impl ClutterActor {
     }
 
     // TODO: This is unsafe as now we have two copied of self.get_ptr()
-    pub fn to_location(&self) -> *mut ChamplainLocation {
-        unsafe { &mut *(self.get_ptr() as *mut ChamplainLocation) }
+    pub fn to_location(&self) -> ChamplainLocation {
+        unsafe { ChamplainLocation::new(&mut *(self.get_ptr() as *mut ChamplainLocationSys)) }
     }
 }
 

@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-use crate::location::ChamplainLocation;
+use crate::location::{ChamplainLocation, ChamplainLocationSys};
 
 #[repr(C)]
 pub struct ChamplainCoordinate {
     _private: [u8; 0],
 }
 
-pub fn to_location(input: *mut ChamplainCoordinate) -> *mut ChamplainLocation {
-    unsafe { &mut *(input as *mut ChamplainLocation) }
+// TODO: This is unsafe as now we have two copied of self.get_ptr()
+pub fn to_location(input: *mut ChamplainCoordinate) -> ChamplainLocation {
+    unsafe { ChamplainLocation::new(&mut *(input as *mut ChamplainLocationSys)) }
 }
 
 #[link(name = "champlain-0.12")]
