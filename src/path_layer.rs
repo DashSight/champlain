@@ -18,25 +18,6 @@ use crate::clutter_colour::ClutterColor;
 use crate::layer::{ChamplainLayer, ChamplainLayerSys};
 use crate::location::{ChamplainLocation, ChamplainLocationSys};
 
-pub struct ChamplainPathLayer {
-    ptr: *mut ChamplainPathLayerSys,
-}
-
-impl ChamplainPathLayer {
-    pub(crate) fn new(ptr: *mut ChamplainPathLayerSys) -> Self {
-        Self { ptr }
-    }
-
-    pub(crate) fn get_ptr(&self) -> *mut ChamplainPathLayerSys {
-        self.ptr
-    }
-
-    // TODO: This is unsafe as now we have two copied of self.get_ptr()
-    pub fn to_layer(&self) -> ChamplainLayer {
-        unsafe { ChamplainLayer::new(&mut *(self.get_ptr() as *mut ChamplainLayerSys)) }
-    }
-}
-
 #[repr(C)]
 pub struct ChamplainPathLayerSys {
     _private: [u8; 0],
@@ -61,26 +42,45 @@ extern "C" {
     );
 }
 
-pub fn new() -> ChamplainPathLayer {
-    unsafe { ChamplainPathLayer::new(champlain_path_layer_new()) }
+pub struct ChamplainPathLayer {
+    ptr: *mut ChamplainPathLayerSys,
 }
 
-pub fn add_node(layer: &mut ChamplainPathLayer, location: &mut ChamplainLocation) {
-    unsafe { champlain_path_layer_add_node(layer.get_ptr(), location.get_ptr()) }
-}
+impl ChamplainPathLayer {
+    pub(crate) fn new_with_ptr(ptr: *mut ChamplainPathLayerSys) -> Self {
+        Self { ptr }
+    }
 
-pub fn remove_node(layer: &mut ChamplainPathLayer, location: &mut ChamplainLocation) {
-    unsafe { champlain_path_layer_remove_node(layer.get_ptr(), location.get_ptr()) }
-}
+    pub(crate) fn get_ptr(&self) -> *mut ChamplainPathLayerSys {
+        self.ptr
+    }
 
-pub fn remove_all(layer: &mut ChamplainPathLayer) {
-    unsafe { champlain_path_layer_remove_all(layer.get_ptr()) }
-}
+    // TODO: This is unsafe as now we have two copied of self.get_ptr()
+    pub fn to_layer(&self) -> ChamplainLayer {
+        unsafe { ChamplainLayer::new(&mut *(self.get_ptr() as *mut ChamplainLayerSys)) }
+    }
 
-pub fn set_visible(layer: &mut ChamplainPathLayer, value: bool) {
-    unsafe { champlain_path_layer_set_visible(layer.get_ptr(), value) }
-}
+    pub fn new() -> Self {
+        unsafe { Self::new_with_ptr(champlain_path_layer_new()) }
+    }
 
-pub fn set_stroke_colour(layer: &mut ChamplainPathLayer, colour: *const ClutterColor) {
-    unsafe { champlain_path_layer_set_stroke_color(layer.get_ptr(), colour) }
+    pub fn add_node(&mut self, location: &mut ChamplainLocation) {
+        unsafe { champlain_path_layer_add_node(self.get_ptr(), location.get_ptr()) }
+    }
+
+    pub fn remove_node(&mut self, location: &mut ChamplainLocation) {
+        unsafe { champlain_path_layer_remove_node(self.get_ptr(), location.get_ptr()) }
+    }
+
+    pub fn remove_all(&mut self) {
+        unsafe { champlain_path_layer_remove_all(self.get_ptr()) }
+    }
+
+    pub fn set_visible(&mut self, value: bool) {
+        unsafe { champlain_path_layer_set_visible(self.get_ptr(), value) }
+    }
+
+    pub fn set_stroke_colour(&mut self, colour: *const ClutterColor) {
+        unsafe { champlain_path_layer_set_stroke_color(self.get_ptr(), colour) }
+    }
 }
