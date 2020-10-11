@@ -35,11 +35,17 @@ extern "C" {
 
 pub struct ChamplainPoint {
     ptr: *mut ChamplainPointSys,
+    location: ChamplainLocation,
+    marker: *mut ChamplainMarker,
 }
 
 impl ChamplainPoint {
     pub(crate) fn new_with_ptr(ptr: *mut ChamplainPointSys) -> Self {
-        Self { ptr }
+        Self {
+            ptr,
+            location: ChamplainLocation::new(ptr as *mut ChamplainLocationSys),
+            marker: ptr as *mut ChamplainMarker,
+        }
     }
 
     fn get_ptr(&self) -> *mut ChamplainPointSys {
@@ -72,13 +78,11 @@ impl ChamplainPoint {
         crate::location::set_location(&mut location, lat, lon)
     }
 
-    // TODO: This is unsafe as now we have two copied of self.get_ptr()
-    pub fn to_location(&self) -> ChamplainLocation {
-        unsafe { ChamplainLocation::new(&mut *(self.get_ptr() as *mut ChamplainLocationSys)) }
+    pub fn borrow_mut_location(&mut self) -> &mut ChamplainLocation {
+        &mut self.location
     }
 
-    // TODO: This is unsafe as now we have two copied of self.get_ptr()
-    pub fn to_champlain_marker(&self) -> *mut ChamplainMarker {
-        unsafe { &mut *(self.get_ptr() as *mut ChamplainMarker) }
+    pub fn borrow_mut_marker(&mut self) -> *mut ChamplainMarker {
+        self.marker
     }
 }

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+use crate::clutter::{ClutterActor, ClutterActorSys};
 use crate::clutter_colour::ClutterColor;
 use crate::layer::{ChamplainLayer, ChamplainLayerSys};
 use crate::location::{ChamplainLocation, ChamplainLocationSys};
@@ -44,20 +45,29 @@ extern "C" {
 
 pub struct ChamplainPathLayer {
     ptr: *mut ChamplainPathLayerSys,
+    actor: ClutterActor,
+    layer: ChamplainLayer,
 }
 
 impl ChamplainPathLayer {
     pub(crate) fn new_with_ptr(ptr: *mut ChamplainPathLayerSys) -> Self {
-        Self { ptr }
+        Self {
+            ptr,
+            actor: ClutterActor::new(ptr as *mut ClutterActorSys),
+            layer: ChamplainLayer::new(ptr as *mut ChamplainLayerSys),
+        }
     }
 
     pub(crate) fn get_ptr(&self) -> *mut ChamplainPathLayerSys {
         self.ptr
     }
 
-    // TODO: This is unsafe as now we have two copied of self.get_ptr()
-    pub fn to_layer(&self) -> ChamplainLayer {
-        unsafe { ChamplainLayer::new(&mut *(self.get_ptr() as *mut ChamplainLayerSys)) }
+    pub fn borrow_actor(&self) -> &ClutterActor {
+        &self.actor
+    }
+
+    pub fn borrow_mut_layer(&mut self) -> &mut ChamplainLayer {
+        &mut self.layer
     }
 
     pub fn new() -> Self {
