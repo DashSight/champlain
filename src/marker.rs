@@ -17,7 +17,7 @@
 use crate::clutter::{ClutterActor, ClutterActorSys};
 
 #[repr(C)]
-pub struct ChamplainMarker {
+pub struct ChamplainMarkerSys {
     _private: [u8; 0],
 }
 
@@ -25,13 +25,37 @@ pub struct ChamplainMarker {
 #[link(name = "champlain-0.12")]
 extern "C" {
     fn champlain_marker_new() -> *mut ClutterActorSys;
-    fn champlain_marker_animate_in(marker: *mut ChamplainMarker);
+    fn champlain_marker_animate_in(marker: *mut ChamplainMarkerSys);
 }
 
-pub fn new() -> ClutterActor {
-    unsafe { ClutterActor::new(champlain_marker_new()) }
+pub struct ChamplainMarker {
+    ptr: *mut ChamplainMarkerSys,
+    actor: ClutterActor,
 }
 
-pub fn animate_in(marker: *mut ChamplainMarker) {
-    unsafe { champlain_marker_animate_in(marker) }
+impl ChamplainMarker {
+    pub(crate) fn new_with_ptr(ptr: *mut ChamplainMarkerSys) -> Self {
+        Self {
+            ptr,
+            actor: ClutterActor::new(ptr as *mut ClutterActorSys),
+        }
+    }
+
+    pub(crate) fn get_ptr(&mut self) -> *mut ChamplainMarkerSys {
+        self.ptr
+    }
+
+    pub fn borrow_mut_actor(&mut self) -> &mut ClutterActor {
+        &mut self.actor
+    }
+
+    pub fn new() -> Self {
+        let marker = unsafe { champlain_marker_new() };
+        let actor = marker as *mut ChamplainMarkerSys;
+        Self::new_with_ptr(actor)
+    }
+
+    pub fn animate_in(&mut self) {
+        unsafe { champlain_marker_animate_in(self.get_ptr()) }
+    }
 }

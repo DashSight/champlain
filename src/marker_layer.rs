@@ -16,7 +16,7 @@
 
 use crate::clutter::{ClutterActor, ClutterActorSys};
 use crate::layer::{ChamplainLayer, ChamplainLayerSys};
-use crate::marker::ChamplainMarker;
+use crate::marker::{ChamplainMarker, ChamplainMarkerSys};
 
 #[repr(C)]
 pub struct ChamplainMarkerLayerSys {
@@ -42,11 +42,11 @@ extern "C" {
     ) -> *mut ChamplainMarkerLayerSys;
     fn champlain_marker_layer_add_marker(
         layer: *mut ChamplainMarkerLayerSys,
-        marker: *mut ChamplainMarker,
+        marker: *mut ChamplainMarkerSys,
     );
     fn champlain_marker_layer_remove_marker(
         layer: *mut ChamplainMarkerLayerSys,
-        marker: *mut ChamplainMarker,
+        marker: *mut ChamplainMarkerSys,
     );
     fn champlain_marker_layer_remove_all(layer: *mut ChamplainMarkerLayerSys);
     fn champlain_marker_layer_animate_in_all_markers(layer: *mut ChamplainMarkerLayerSys);
@@ -88,12 +88,12 @@ impl ChamplainMarkerLayer {
         unsafe { Self::new_with_ptr(champlain_marker_layer_new_full(mode)) }
     }
 
-    pub fn add_marker(&mut self, marker: *mut ChamplainMarker) {
-        unsafe { champlain_marker_layer_add_marker(self.get_ptr(), marker) }
+    pub fn add_marker(&mut self, marker: &mut ChamplainMarker) {
+        unsafe { champlain_marker_layer_add_marker(self.get_ptr(), marker.get_ptr()) }
     }
 
-    pub fn remove_marker(&mut self, marker: *mut ChamplainMarker) {
-        unsafe { champlain_marker_layer_remove_marker(self.get_ptr(), marker) }
+    pub fn remove_marker(&mut self, marker: &mut ChamplainMarker) {
+        unsafe { champlain_marker_layer_remove_marker(self.get_ptr(), marker.get_ptr()) }
     }
 
     pub fn remove_all(&mut self) {

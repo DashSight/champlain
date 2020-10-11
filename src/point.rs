@@ -17,7 +17,7 @@
 use crate::clutter::ClutterActorSys;
 use crate::clutter_colour::ClutterColor;
 use crate::location::{ChamplainLocation, ChamplainLocationSys};
-use crate::marker::ChamplainMarker;
+use crate::marker::{ChamplainMarker, ChamplainMarkerSys};
 
 #[repr(C)]
 pub(crate) struct ChamplainPointSys {
@@ -36,7 +36,7 @@ extern "C" {
 pub struct ChamplainPoint {
     ptr: *mut ChamplainPointSys,
     location: ChamplainLocation,
-    marker: *mut ChamplainMarker,
+    marker: ChamplainMarker,
 }
 
 impl ChamplainPoint {
@@ -44,7 +44,7 @@ impl ChamplainPoint {
         Self {
             ptr,
             location: ChamplainLocation::new(ptr as *mut ChamplainLocationSys),
-            marker: ptr as *mut ChamplainMarker,
+            marker: ChamplainMarker::new_with_ptr(ptr as *mut ChamplainMarkerSys),
         }
     }
 
@@ -79,7 +79,7 @@ impl ChamplainPoint {
         &mut self.location
     }
 
-    pub fn borrow_mut_marker(&mut self) -> *mut ChamplainMarker {
-        self.marker
+    pub fn borrow_mut_marker(&mut self) -> &mut ChamplainMarker {
+        &mut self.marker
     }
 }
