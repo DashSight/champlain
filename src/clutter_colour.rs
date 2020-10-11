@@ -17,7 +17,7 @@
 use libc::c_uint;
 
 #[repr(C)]
-pub struct ClutterColor {
+pub struct ClutterColorSys {
     _private: [u8; 0],
 }
 
@@ -28,9 +28,23 @@ extern "C" {
         green: c_uint,
         blue: c_uint,
         alpha: c_uint,
-    ) -> *const ClutterColor;
+    ) -> *const ClutterColorSys;
 }
 
-pub fn new(red: c_uint, green: c_uint, blue: c_uint, alpha: c_uint) -> *const ClutterColor {
-    unsafe { clutter_color_new(red, green, blue, alpha) }
+pub struct ClutterColor {
+    ptr: *const ClutterColorSys,
+}
+
+impl ClutterColor {
+    pub(crate) fn new_with_ptr(ptr: *const ClutterColorSys) -> Self {
+        Self { ptr }
+    }
+
+    pub(crate) fn get_ptr(&self) -> *const ClutterColorSys {
+        self.ptr
+    }
+
+    pub fn new(red: c_uint, green: c_uint, blue: c_uint, alpha: c_uint) -> ClutterColor {
+        unsafe { Self::new_with_ptr(clutter_color_new(red, green, blue, alpha)) }
+    }
 }

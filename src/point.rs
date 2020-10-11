@@ -15,7 +15,7 @@
  */
 
 use crate::clutter::ClutterActorSys;
-use crate::clutter_colour::ClutterColor;
+use crate::clutter_colour::{ClutterColor, ClutterColorSys};
 use crate::location::{ChamplainLocation, ChamplainLocationSys};
 use crate::marker::{ChamplainMarker, ChamplainMarkerSys};
 
@@ -28,9 +28,9 @@ pub(crate) struct ChamplainPointSys {
 #[link(name = "champlain-0.12")]
 extern "C" {
     fn champlain_point_new() -> *mut ClutterActorSys;
-    fn champlain_point_new_full(size: f64, colour: *const ClutterColor) -> *mut ClutterActorSys;
-    fn champlain_point_set_color(point: *mut ChamplainPointSys, colour: *const ClutterColor);
-    fn champlain_point_get_color(point: *mut ChamplainPointSys) -> *const ClutterColor;
+    fn champlain_point_new_full(size: f64, colour: *const ClutterColorSys) -> *mut ClutterActorSys;
+    fn champlain_point_set_color(point: *mut ChamplainPointSys, colour: *const ClutterColorSys);
+    fn champlain_point_get_color(point: *mut ChamplainPointSys) -> *const ClutterColorSys;
 }
 
 pub struct ChamplainPoint {
@@ -56,18 +56,20 @@ impl ChamplainPoint {
         unsafe { Self::new_with_ptr(champlain_point_new() as *mut ChamplainPointSys) }
     }
 
-    pub fn new_full(size: f64, colour: *const ClutterColor) -> Self {
+    pub fn new_full(size: f64, colour: ClutterColor) -> Self {
         unsafe {
-            Self::new_with_ptr(champlain_point_new_full(size, colour) as *mut ChamplainPointSys)
+            Self::new_with_ptr(
+                champlain_point_new_full(size, colour.get_ptr()) as *mut ChamplainPointSys
+            )
         }
     }
 
-    pub fn set_colour(&mut self, colour: *const ClutterColor) {
-        unsafe { champlain_point_set_color(self.get_ptr(), colour) }
+    pub fn set_colour(&mut self, colour: ClutterColor) {
+        unsafe { champlain_point_set_color(self.get_ptr(), colour.get_ptr()) }
     }
 
-    pub fn get_colour(&mut self) -> *const ClutterColor {
-        unsafe { champlain_point_get_color(self.get_ptr()) }
+    pub fn get_colour(&mut self) -> ClutterColor {
+        unsafe { ClutterColor::new_with_ptr(champlain_point_get_color(self.get_ptr())) }
     }
 
     pub fn set_location(&mut self, lat: f64, lon: f64) {

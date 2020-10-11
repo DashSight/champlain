@@ -15,7 +15,7 @@
  */
 
 use crate::clutter::{ClutterActor, ClutterActorSys};
-use crate::clutter_colour::ClutterColor;
+use crate::clutter_colour::{ClutterColor, ClutterColorSys};
 use crate::layer::{ChamplainLayer, ChamplainLayerSys};
 use crate::location::{ChamplainLocation, ChamplainLocationSys};
 
@@ -39,7 +39,7 @@ extern "C" {
     fn champlain_path_layer_set_visible(layer: *mut ChamplainPathLayerSys, value: bool);
     fn champlain_path_layer_set_stroke_color(
         layer: *mut ChamplainPathLayerSys,
-        colour: *const ClutterColor,
+        colour: *const ClutterColorSys,
     );
 }
 
@@ -90,7 +90,7 @@ impl ChamplainPathLayer {
         unsafe { champlain_path_layer_set_visible(self.get_ptr(), value) }
     }
 
-    pub fn set_stroke_colour(&mut self, colour: *const ClutterColor) {
-        unsafe { champlain_path_layer_set_stroke_color(self.get_ptr(), colour) }
+    pub fn set_stroke_colour(&mut self, colour: ClutterColor) {
+        unsafe { champlain_path_layer_set_stroke_color(self.get_ptr(), colour.get_ptr()) }
     }
 }
