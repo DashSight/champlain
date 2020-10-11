@@ -48,19 +48,17 @@ impl ChamplainPoint {
         }
     }
 
-    fn get_ptr(&self) -> *mut ChamplainPointSys {
+    fn get_ptr(&mut self) -> *mut ChamplainPointSys {
         self.ptr
     }
 
     pub fn new() -> Self {
-        unsafe { Self::new_with_ptr(&mut *(champlain_point_new() as *mut ChamplainPointSys)) }
+        unsafe { Self::new_with_ptr(champlain_point_new() as *mut ChamplainPointSys) }
     }
 
     pub fn new_full(size: f64, colour: *const ClutterColor) -> Self {
         unsafe {
-            Self::new_with_ptr(
-                &mut *(champlain_point_new_full(size, colour) as *mut ChamplainPointSys),
-            )
+            Self::new_with_ptr(champlain_point_new_full(size, colour) as *mut ChamplainPointSys)
         }
     }
 
@@ -72,9 +70,8 @@ impl ChamplainPoint {
         unsafe { champlain_point_get_color(self.get_ptr()) }
     }
 
-    pub fn set_location(&self, lat: f64, lon: f64) {
-        let mut location =
-            unsafe { ChamplainLocation::new(&mut *(self.get_ptr() as *mut ChamplainLocationSys)) };
+    pub fn set_location(&mut self, lat: f64, lon: f64) {
+        let mut location = ChamplainLocation::new(self.get_ptr() as *mut ChamplainLocationSys);
         crate::location::set_location(&mut location, lat, lon)
     }
 

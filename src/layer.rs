@@ -47,6 +47,6 @@ extern "C" {
     fn champlain_layer_set_view(layer: *mut ChamplainLayerSys, view: *mut ChamplainViewSys);
 }
 
-pub fn set_view(layer: &mut ChamplainLayer, view: &ChamplainView) {
+pub fn set_view(layer: &mut ChamplainLayer, view: &mut ChamplainView) {
     unsafe { champlain_layer_set_view(layer.get_ptr(), view.get_ptr()) }
 }

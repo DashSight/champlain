@@ -68,7 +68,7 @@ impl ChamplainMarkerLayer {
         }
     }
 
-    fn get_ptr(&self) -> *mut ChamplainMarkerLayerSys {
+    fn get_ptr(&mut self) -> *mut ChamplainMarkerLayerSys {
         self.ptr
     }
 

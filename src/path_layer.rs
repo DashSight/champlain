@@ -58,7 +58,7 @@ impl ChamplainPathLayer {
         }
     }
 
-    pub(crate) fn get_ptr(&self) -> *mut ChamplainPathLayerSys {
+    fn get_ptr(&mut self) -> *mut ChamplainPathLayerSys {
         self.ptr
     }
 

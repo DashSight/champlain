@@ -47,7 +47,7 @@ impl ChamplainView {
         Self { ptr }
     }
 
-    pub(crate) fn get_ptr(&self) -> *mut ChamplainViewSys {
+    pub(crate) fn get_ptr(&mut self) -> *mut ChamplainViewSys {
         self.ptr
     }
 
@@ -75,9 +75,8 @@ impl ChamplainView {
         unsafe { champlain_view_remove_layer(self.get_ptr(), layer.get_ptr()) }
     }
 
-    pub fn set_reactive(&self, reactive: bool) {
-        let mut clutter_actor =
-            unsafe { ClutterActor::new(&mut *(self.get_ptr() as *mut ClutterActorSys)) };
+    pub fn set_reactive(&mut self, reactive: bool) {
+        let mut clutter_actor = ClutterActor::new(self.get_ptr() as *mut ClutterActorSys);
         clutter_actor.set_reactive(reactive)
     }
 }
