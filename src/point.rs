@@ -39,6 +39,12 @@ pub struct ChamplainPoint {
     marker: ChamplainMarker,
 }
 
+impl Default for ChamplainPoint {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl ChamplainPoint {
     pub(crate) fn new_with_ptr(ptr: *mut ChamplainPointSys) -> Self {
         Self {

@@ -33,6 +33,12 @@ pub struct ChamplainCoordinate {
     location: ChamplainLocation,
 }
 
+impl Default for ChamplainCoordinate {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl ChamplainCoordinate {
     pub(crate) fn new_with_ptr(ptr: *mut ChamplainCoordinateSys) -> Self {
         Self {

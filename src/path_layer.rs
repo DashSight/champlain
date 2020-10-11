@@ -49,6 +49,12 @@ pub struct ChamplainPathLayer {
     layer: ChamplainLayer,
 }
 
+impl Default for ChamplainPathLayer {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl ChamplainPathLayer {
     pub(crate) fn new_with_ptr(ptr: *mut ChamplainPathLayerSys) -> Self {
         Self {

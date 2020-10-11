@@ -59,6 +59,12 @@ pub struct ChamplainMarkerLayer {
     layer: ChamplainLayer,
 }
 
+impl Default for ChamplainMarkerLayer {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl ChamplainMarkerLayer {
     fn new_with_ptr(ptr: *mut ChamplainMarkerLayerSys) -> Self {
         Self {

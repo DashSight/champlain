@@ -33,6 +33,12 @@ pub struct ChamplainMarker {
     actor: ClutterActor,
 }
 
+impl Default for ChamplainMarker {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl ChamplainMarker {
     pub(crate) fn new_with_ptr(ptr: *mut ChamplainMarkerSys) -> Self {
         Self {
