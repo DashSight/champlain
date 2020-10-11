@@ -34,6 +34,14 @@ impl ClutterActor {
         self.ptr
     }
 
+    pub fn init() -> Error {
+        unsafe { clutter_init(ptr::null(), ptr::null()) }
+    }
+
+    pub fn stage_new() -> Self {
+        unsafe { Self::new(clutter_stage_new()) }
+    }
+
     // TODO: This is unsafe as now we have two copied of self.get_ptr()
     pub fn to_point(&self) -> ChamplainPoint {
         unsafe { ChamplainPoint::new(&mut *(self.get_ptr() as *mut ChamplainPointSys)) }
@@ -52,6 +60,18 @@ impl ClutterActor {
     // TODO: This is unsafe as now we have two copied of self.get_ptr()
     pub fn to_location(&self) -> ChamplainLocation {
         unsafe { ChamplainLocation::new(&mut *(self.get_ptr() as *mut ChamplainLocationSys)) }
+    }
+
+    pub fn actor_add_child(&mut self, child: &mut ClutterActor) {
+        unsafe { clutter_actor_add_child(self.get_ptr(), child.get_ptr()) }
+    }
+
+    pub fn set_reactive(&mut self, reactive: bool) {
+        unsafe { clutter_actor_set_reactive(self.get_ptr(), reactive) }
+    }
+
+    pub fn show(&mut self) {
+        unsafe { clutter_actor_show(self.get_ptr()) }
     }
 }
 
@@ -75,12 +95,8 @@ pub enum Error {
 extern "C" {
     fn clutter_init(argc: *const c_int, argv: *const *const c_char) -> Error;
     fn clutter_stage_new() -> *mut ClutterActorSys;
-}
 
-pub fn init() -> Error {
-    unsafe { clutter_init(ptr::null(), ptr::null()) }
-}
-
-pub fn stage_new() -> ClutterActor {
-    unsafe { ClutterActor::new(clutter_stage_new()) }
+    fn clutter_actor_add_child(me: *mut ClutterActorSys, child: *mut ClutterActorSys);
+    fn clutter_actor_set_reactive(actor: *mut ClutterActorSys, reactive: bool);
+    fn clutter_actor_show(me: *mut ClutterActorSys);
 }

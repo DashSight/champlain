@@ -19,7 +19,6 @@ pub mod gtk_embed;
 pub mod view;
 
 pub mod clutter;
-pub mod clutter_actor;
 pub mod clutter_colour;
 pub mod coordinate;
 pub mod gtk_clutter;

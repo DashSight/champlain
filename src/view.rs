@@ -14,10 +14,29 @@
  * limitations under the License.
  */
 
-use libc::{c_double, c_uint};
-
 use crate::clutter::{ClutterActor, ClutterActorSys};
 use crate::layer::{ChamplainLayer, ChamplainLayerSys};
+use libc::{c_double, c_uint};
+
+#[repr(C)]
+pub(crate) struct ChamplainViewSys {
+    _private: [u8; 0],
+}
+
+/// ChamplainViewSys functions
+#[link(name = "champlain-0.12")]
+extern "C" {
+    fn champlain_view_center_on(
+        view: *mut ChamplainViewSys,
+        latitude: c_double,
+        longitude: c_double,
+    );
+    fn champlain_view_set_zoom_level(view: *mut ChamplainViewSys, zoom_level: c_uint);
+    fn champlain_view_set_kinetic_mode(view: *mut ChamplainViewSys, mode: bool);
+    fn champlain_view_set_zoom_on_double_click(view: *mut ChamplainViewSys, value: bool);
+    fn champlain_view_add_layer(view: *mut ChamplainViewSys, layer: *mut ChamplainLayerSys);
+    fn champlain_view_remove_layer(view: *mut ChamplainViewSys, layer: *mut ChamplainLayerSys);
+}
 
 pub struct ChamplainView {
     ptr: *mut ChamplainViewSys,
@@ -32,57 +51,33 @@ impl ChamplainView {
         self.ptr
     }
 
-    // TODO: This is unsafe as now we have two copied of self.get_ptr()
-    pub fn to_clutter_actor(&self) -> ClutterActor {
-        unsafe { ClutterActor::new(&mut *(self.get_ptr() as *mut ClutterActorSys)) }
+    pub fn center_on(&mut self, latitude: f64, longitude: f64) {
+        unsafe { champlain_view_center_on(self.get_ptr(), latitude, longitude) }
     }
-}
 
-#[repr(C)]
-pub(crate) struct ChamplainViewSys {
-    _private: [u8; 0],
-}
+    pub fn set_zoom_level(&mut self, zoom_level: u32) {
+        unsafe { champlain_view_set_zoom_level(self.get_ptr(), zoom_level) }
+    }
 
-/// ChamplainViewSys functions
-#[link(name = "champlain-0.12")]
-extern "C" {
-    fn champlain_view_new() -> *mut ChamplainViewSys;
-    fn champlain_view_center_on(
-        view: *mut ChamplainViewSys,
-        latitude: c_double,
-        longitude: c_double,
-    );
-    fn champlain_view_set_zoom_level(view: *mut ChamplainViewSys, zoom_level: c_uint);
-    fn champlain_view_set_kinetic_mode(view: *mut ChamplainViewSys, mode: bool);
-    fn champlain_view_set_zoom_on_double_click(view: *mut ChamplainViewSys, value: bool);
-    fn champlain_view_add_layer(view: *mut ChamplainViewSys, layer: *mut ChamplainLayerSys);
-    fn champlain_view_remove_layer(view: *mut ChamplainViewSys, layer: *mut ChamplainLayerSys);
-}
+    pub fn set_kinetic_mode(&mut self, mode: bool) {
+        unsafe { champlain_view_set_kinetic_mode(self.get_ptr(), mode) }
+    }
 
-pub fn new() -> ChamplainView {
-    unsafe { ChamplainView::new(champlain_view_new()) }
-}
+    pub fn set_zoom_on_double_click(&mut self, value: bool) {
+        unsafe { champlain_view_set_zoom_on_double_click(self.get_ptr(), value) }
+    }
 
-pub fn center_on(view: &mut ChamplainView, latitude: f64, longitude: f64) {
-    unsafe { champlain_view_center_on(view.get_ptr(), latitude, longitude) }
-}
+    pub fn add_layer(&mut self, layer: &mut ChamplainLayer) {
+        unsafe { champlain_view_add_layer(self.get_ptr(), layer.get_ptr()) }
+    }
 
-pub fn set_zoom_level(view: &mut ChamplainView, zoom_level: u32) {
-    unsafe { champlain_view_set_zoom_level(view.get_ptr(), zoom_level) }
-}
+    pub fn remove_layer(&mut self, layer: &mut ChamplainLayer) {
+        unsafe { champlain_view_remove_layer(self.get_ptr(), layer.get_ptr()) }
+    }
 
-pub fn set_kinetic_mode(view: &mut ChamplainView, mode: bool) {
-    unsafe { champlain_view_set_kinetic_mode(view.get_ptr(), mode) }
-}
-
-pub fn set_zoom_on_double_click(view: &mut ChamplainView, value: bool) {
-    unsafe { champlain_view_set_zoom_on_double_click(view.get_ptr(), value) }
-}
-
-pub fn add_layer(view: &mut ChamplainView, layer: &mut ChamplainLayer) {
-    unsafe { champlain_view_add_layer(view.get_ptr(), layer.get_ptr()) }
-}
-
-pub fn remove_layer(view: &mut ChamplainView, layer: &mut ChamplainLayer) {
-    unsafe { champlain_view_remove_layer(view.get_ptr(), layer.get_ptr()) }
+    pub fn set_reactive(&self, reactive: bool) {
+        let mut clutter_actor =
+            unsafe { ClutterActor::new(&mut *(self.get_ptr() as *mut ClutterActorSys)) };
+        clutter_actor.set_reactive(reactive)
+    }
 }
