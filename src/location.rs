@@ -16,20 +16,6 @@
 
 use libc::c_double;
 
-pub struct ChamplainLocation {
-    ptr: *mut ChamplainLocationSys,
-}
-
-impl ChamplainLocation {
-    pub(crate) fn new(ptr: *mut ChamplainLocationSys) -> Self {
-        Self { ptr }
-    }
-
-    pub(crate) fn get_ptr(&self) -> *mut ChamplainLocationSys {
-        self.ptr
-    }
-}
-
 #[repr(C)]
 pub struct ChamplainLocationSys {
     _private: [u8; 0],
@@ -45,6 +31,20 @@ extern "C" {
     );
 }
 
-pub fn set_location(location: &mut ChamplainLocation, lat: f64, lon: f64) {
-    unsafe { champlain_location_set_location(location.get_ptr(), lat, lon) }
+pub struct ChamplainLocation {
+    ptr: *mut ChamplainLocationSys,
+}
+
+impl ChamplainLocation {
+    pub(crate) fn new_with_ptr(ptr: *mut ChamplainLocationSys) -> Self {
+        Self { ptr }
+    }
+
+    pub(crate) fn get_ptr(&mut self) -> *mut ChamplainLocationSys {
+        self.ptr
+    }
+
+    pub fn set_location(&mut self, lat: f64, lon: f64) {
+        unsafe { champlain_location_set_location(self.get_ptr(), lat, lon) }
+    }
 }

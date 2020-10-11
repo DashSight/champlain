@@ -15,7 +15,6 @@
  */
 
 use crate::layer::{ChamplainLayer, ChamplainLayerSys};
-use crate::location::{ChamplainLocation, ChamplainLocationSys};
 use libc::{c_char, c_int};
 use std::ptr;
 
@@ -43,11 +42,6 @@ impl ClutterActor {
     // TODO: This is unsafe as now we have two copied of self.get_ptr()
     pub fn to_champlain_layer(&self) -> ChamplainLayer {
         unsafe { ChamplainLayer::new(&mut *(self.get_ptr() as *mut ChamplainLayerSys)) }
-    }
-
-    // TODO: This is unsafe as now we have two copied of self.get_ptr()
-    pub fn to_location(&self) -> ChamplainLocation {
-        unsafe { ChamplainLocation::new(&mut *(self.get_ptr() as *mut ChamplainLocationSys)) }
     }
 
     pub fn actor_add_child(&mut self, child: &mut ClutterActor) {

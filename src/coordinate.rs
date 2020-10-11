@@ -23,7 +23,7 @@ pub struct ChamplainCoordinate {
 
 // TODO: This is unsafe as now we have two copied of self.get_ptr()
 pub fn to_location(input: *mut ChamplainCoordinate) -> ChamplainLocation {
-    unsafe { ChamplainLocation::new(&mut *(input as *mut ChamplainLocationSys)) }
+    ChamplainLocation::new_with_ptr(input as *mut ChamplainLocationSys)
 }
 
 #[link(name = "champlain-0.12")]

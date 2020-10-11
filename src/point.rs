@@ -43,7 +43,7 @@ impl ChamplainPoint {
     pub(crate) fn new_with_ptr(ptr: *mut ChamplainPointSys) -> Self {
         Self {
             ptr,
-            location: ChamplainLocation::new(ptr as *mut ChamplainLocationSys),
+            location: ChamplainLocation::new_with_ptr(ptr as *mut ChamplainLocationSys),
             marker: ChamplainMarker::new_with_ptr(ptr as *mut ChamplainMarkerSys),
         }
     }
@@ -71,8 +71,9 @@ impl ChamplainPoint {
     }
 
     pub fn set_location(&mut self, lat: f64, lon: f64) {
-        let mut location = ChamplainLocation::new(self.get_ptr() as *mut ChamplainLocationSys);
-        crate::location::set_location(&mut location, lat, lon)
+        let mut location =
+            ChamplainLocation::new_with_ptr(self.get_ptr() as *mut ChamplainLocationSys);
+        location.set_location(lat, lon)
     }
 
     pub fn borrow_mut_location(&mut self) -> &mut ChamplainLocation {
