@@ -29,5 +29,5 @@ pub fn new() -> gtk::Widget {
 }
 
 pub fn get_view(embed: gtk::Widget) -> ChamplainView {
-    unsafe { ChamplainView::new(gtk_champlain_embed_get_view(embed.to_glib_none().0)) }
+    unsafe { ChamplainView::new_with_ptr(gtk_champlain_embed_get_view(embed.to_glib_none().0)) }
 }

@@ -43,7 +43,7 @@ pub struct ChamplainView {
 }
 
 impl ChamplainView {
-    pub(crate) fn new(ptr: *mut ChamplainViewSys) -> Self {
+    pub(crate) fn new_with_ptr(ptr: *mut ChamplainViewSys) -> Self {
         Self { ptr }
     }
 
