@@ -14,28 +14,46 @@
  * limitations under the License.
  */
 
+use crate::clutter::{ClutterActor, ClutterActorSys};
 use crate::location::{ChamplainLocation, ChamplainLocationSys};
 
 #[repr(C)]
-pub struct ChamplainCoordinate {
+pub struct ChamplainCoordinateSys {
     _private: [u8; 0],
-}
-
-// TODO: This is unsafe as now we have two copied of self.get_ptr()
-pub fn to_location(input: *mut ChamplainCoordinate) -> ChamplainLocation {
-    ChamplainLocation::new_with_ptr(input as *mut ChamplainLocationSys)
 }
 
 #[link(name = "champlain-0.12")]
 extern "C" {
-    fn champlain_coordinate_new() -> *mut ChamplainCoordinate;
-    fn champlain_coordinate_new_full(latitude: f64, longitude: f64) -> *mut ChamplainCoordinate;
+    fn champlain_coordinate_new() -> *mut ChamplainCoordinateSys;
+    fn champlain_coordinate_new_full(latitude: f64, longitude: f64) -> *mut ChamplainCoordinateSys;
 }
 
-pub fn new() -> *mut ChamplainCoordinate {
-    unsafe { champlain_coordinate_new() }
+pub struct ChamplainCoordinate {
+    actor: ClutterActor,
+    location: ChamplainLocation,
 }
 
-pub fn new_full(latitude: f64, longitude: f64) -> *mut ChamplainCoordinate {
-    unsafe { champlain_coordinate_new_full(latitude, longitude) }
+impl ChamplainCoordinate {
+    pub(crate) fn new_with_ptr(ptr: *mut ChamplainCoordinateSys) -> Self {
+        Self {
+            actor: ClutterActor::new(ptr as *mut ClutterActorSys),
+            location: ChamplainLocation::new_with_ptr(ptr as *mut ChamplainLocationSys),
+        }
+    }
+
+    pub fn borrow_mut_actor(&mut self) -> &mut ClutterActor {
+        &mut self.actor
+    }
+
+    pub fn borrow_mut_location(&mut self) -> &mut ChamplainLocation {
+        &mut self.location
+    }
+
+    pub fn new() -> Self {
+        unsafe { Self::new_with_ptr(champlain_coordinate_new()) }
+    }
+
+    pub fn new_full(latitude: f64, longitude: f64) -> Self {
+        unsafe { Self::new_with_ptr(champlain_coordinate_new_full(latitude, longitude)) }
+    }
 }
