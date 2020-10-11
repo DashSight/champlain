@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
+use crate::clutter::{ClutterActor, ClutterActorSys};
 use crate::layer::{ChamplainLayer, ChamplainLayerSys};
 use crate::marker::ChamplainMarker;
 
 #[repr(C)]
-pub struct ChamplainMarkerLayer {
+pub struct ChamplainMarkerLayerSys {
     _private: [u8; 0],
 }
 
@@ -32,52 +33,78 @@ pub enum ChamplainSelectionMode {
     ChamplainSelectionMultiple,
 }
 
-pub fn to_layer(input: *mut ChamplainMarkerLayer) -> ChamplainLayer {
-    unsafe { ChamplainLayer::new(&mut *(input as *mut ChamplainLayerSys)) }
-}
-
 /// ChamplainMarkerLayer functions
 #[link(name = "champlain-0.12")]
 extern "C" {
-    fn champlain_marker_layer_new() -> *mut ChamplainMarkerLayer;
-    fn champlain_marker_layer_new_full(mode: ChamplainSelectionMode) -> *mut ChamplainMarkerLayer;
+    fn champlain_marker_layer_new() -> *mut ChamplainMarkerLayerSys;
+    fn champlain_marker_layer_new_full(
+        mode: ChamplainSelectionMode,
+    ) -> *mut ChamplainMarkerLayerSys;
     fn champlain_marker_layer_add_marker(
-        layer: *mut ChamplainMarkerLayer,
+        layer: *mut ChamplainMarkerLayerSys,
         marker: *mut ChamplainMarker,
     );
     fn champlain_marker_layer_remove_marker(
-        layer: *mut ChamplainMarkerLayer,
+        layer: *mut ChamplainMarkerLayerSys,
         marker: *mut ChamplainMarker,
     );
-    fn champlain_marker_layer_remove_all(layer: *mut ChamplainMarkerLayer);
-    fn champlain_marker_layer_animate_in_all_markers(layer: *mut ChamplainMarkerLayer);
-    fn champlain_marker_layer_show_all_markers(layer: *mut ChamplainMarkerLayer);
+    fn champlain_marker_layer_remove_all(layer: *mut ChamplainMarkerLayerSys);
+    fn champlain_marker_layer_animate_in_all_markers(layer: *mut ChamplainMarkerLayerSys);
+    fn champlain_marker_layer_show_all_markers(layer: *mut ChamplainMarkerLayerSys);
 }
 
-pub fn new() -> *mut ChamplainMarkerLayer {
-    unsafe { champlain_marker_layer_new() }
+pub struct ChamplainMarkerLayer {
+    ptr: *mut ChamplainMarkerLayerSys,
+    actor: ClutterActor,
+    layer: ChamplainLayer,
 }
 
-pub fn new_full(mode: ChamplainSelectionMode) -> *mut ChamplainMarkerLayer {
-    unsafe { champlain_marker_layer_new_full(mode) }
-}
+impl ChamplainMarkerLayer {
+    fn new_with_ptr(ptr: *mut ChamplainMarkerLayerSys) -> Self {
+        Self {
+            ptr,
+            actor: ClutterActor::new(ptr as *mut ClutterActorSys),
+            layer: ChamplainLayer::new(ptr as *mut ChamplainLayerSys),
+        }
+    }
 
-pub fn add_marker(layer: *mut ChamplainMarkerLayer, marker: *mut ChamplainMarker) {
-    unsafe { champlain_marker_layer_add_marker(layer, marker) }
-}
+    fn get_ptr(&self) -> *mut ChamplainMarkerLayerSys {
+        self.ptr
+    }
 
-pub fn remove_marker(layer: *mut ChamplainMarkerLayer, marker: *mut ChamplainMarker) {
-    unsafe { champlain_marker_layer_remove_marker(layer, marker) }
-}
+    pub fn borrow_mut_layer(&mut self) -> &mut ChamplainLayer {
+        &mut self.layer
+    }
 
-pub fn remove_all(layer: *mut ChamplainMarkerLayer) {
-    unsafe { champlain_marker_layer_remove_all(layer) }
-}
+    pub fn borrow_mut_actor(&mut self) -> &mut ClutterActor {
+        &mut self.actor
+    }
 
-pub fn animate_in_all_markers(layer: *mut ChamplainMarkerLayer) {
-    unsafe { champlain_marker_layer_animate_in_all_markers(layer) }
-}
+    pub fn new() -> Self {
+        unsafe { Self::new_with_ptr(champlain_marker_layer_new()) }
+    }
 
-pub fn show_all_markers(layer: *mut ChamplainMarkerLayer) {
-    unsafe { champlain_marker_layer_show_all_markers(layer) }
+    pub fn new_full(mode: ChamplainSelectionMode) -> ChamplainMarkerLayer {
+        unsafe { Self::new_with_ptr(champlain_marker_layer_new_full(mode)) }
+    }
+
+    pub fn add_marker(&mut self, marker: *mut ChamplainMarker) {
+        unsafe { champlain_marker_layer_add_marker(self.get_ptr(), marker) }
+    }
+
+    pub fn remove_marker(&mut self, marker: *mut ChamplainMarker) {
+        unsafe { champlain_marker_layer_remove_marker(self.get_ptr(), marker) }
+    }
+
+    pub fn remove_all(&mut self) {
+        unsafe { champlain_marker_layer_remove_all(self.get_ptr()) }
+    }
+
+    pub fn animate_in_all_markers(&mut self) {
+        unsafe { champlain_marker_layer_animate_in_all_markers(self.get_ptr()) }
+    }
+
+    pub fn show_all_markers(&mut self) {
+        unsafe { champlain_marker_layer_show_all_markers(self.get_ptr()) }
+    }
 }
